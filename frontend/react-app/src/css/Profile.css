@@ -1,0 +1,65 @@
+
+  .profile-page { 
+    padding: 2rem  6rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .user-info {
+    display: flex; 
+    align-items: left;
+    gap: 2rem;
+    margin-bottom: 2rem; 
+  }
+  
+  .profile-picture img {
+    width: 10rem;
+    height: 10rem;
+    object-fit: cover;
+    border-radius: 50%;
+    
+  }
+
+  .profile-name {
+    font-weight: bold;
+    font-size: 30px;
+    margin-bottom: 5px;
+  }
+  
+  .profile-username{
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 5px ;
+  }
+  .profile-email {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .teams-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    align-items: center;
+  }
+  
+  .logout-btn{
+    margin-top: 5rem;
+    background-color: #4F4A41; 
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    border: none;
+    border-radius: 20px; 
+    padding: 15px 30px;
+    cursor: pointer;
+    display: flex;
+    width: fit-content;
+    transition: background-color 0.3s ease-in-out;
+  }
+  .logout-btn:hover {
+    background-color: #6e6658; 
+}
+  

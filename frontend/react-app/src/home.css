@@ -1,0 +1,103 @@
+*, html {
+    margin:0;
+    padding:0;  
+ }
+
+ body {
+    background-color:#BFCDE0;
+    margin-left:5%;
+    margin-right: 5%;
+    margin-top: 50px;
+ };
+
+
+#navBar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    align-items: center;
+}
+
+#logo {
+    width: 60px;
+    height: 60px;
+}
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-family:Arial, Helvetica, sans-serif;
+    margin-top: 50px;
+}
+
+table {
+    width: 100%;
+    border: 1px solid black;
+    border-collapse:collapse;
+    margin-top: 20px;
+}
+
+thead {
+    background-color: #5D5D81;
+    color: #dce6f4;
+}
+
+tr {
+    border: 1px solid black;
+}
+
+th {
+    text-align: left;
+    padding: 5px;
+}
+
+td {
+    background-color: white;
+    text-align: left;
+    padding: 10px;
+}
+
+.teamButton {
+    width: 400px;
+    height: 75px;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.25em;
+    background-color:#3B3355;
+    color: white;
+}
+
+.teamButton:hover {
+    background-color: #2d2644;
+}
+
+#teamButtons { /*group of buttons*/
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+tbody {
+    width: 100%;
+}
+
+.miniButton {
+    padding: 3px 6px;
+    background-color:#3B3355;
+    color: #dce6f4;
+    border-radius: 3px;
+    border:none;
+}
+
+.miniButton:hover {
+    background-color: #2d2644;
+}
+
+.taskName {
+    text-decoration: underline;
+}
+
+#taskSection h2 {
+    text-decoration: underline;
+}
