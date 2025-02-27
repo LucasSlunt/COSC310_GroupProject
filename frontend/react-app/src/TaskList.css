@@ -1,0 +1,29 @@
+table{
+    width: 60%;
+    height:60%;
+    border-collapse: collapse;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+th,td{
+    padding:10px;
+    background-color: darkgrey;
+}
+thead th{
+    background-color: dimgrey;
+}
+tbody tr :hover{
+    background-color: darkslategray;
+}
+tbody td {
+    position: relative;
+  }
+tbody td:hover:before {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -99999px;
+    bottom: -99999px;
+    background-color: rgba(255, 255, 255, 0);
+    z-index: -1;
+  }
