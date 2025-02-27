@@ -1,0 +1,32 @@
+
+.teams{
+    padding: 1rem  0px;
+    width: 100%;
+}
+
+.team-btn {
+    background-color: #112D32; 
+    color: #ffffff;
+    font-weight: bold;
+    border: none;
+    border-radius: 20px; 
+    padding: 15px 30px;
+    cursor: pointer;
+    display: flex;
+    width: 20em;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.team-btn:hover {
+    background-color: #254E58; 
+}
+
+.team-info {
+    display: flex;
+    gap: 2em;
+}
+
+.team-info h1 {
+    font-size: 1.5rem;
+    margin: 5px 0;
+}
