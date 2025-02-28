@@ -1,15 +1,8 @@
-import {useTable} from 'react-table'
+import {useTable, useFilters} from 'react-table'
 import React from 'react';
 import "./TaskList.css"
 import fakeData from "./fakeTaskData.json"
-const mockData = {
-    name: "Task",
-    team: "Team 1",
-    assignees: "James Liam Evan Kelly",
-    status: "in progress",
-    priority: "Low",
-    dueDate: "2/15/2025"
-}
+import {FilterTaskTable} from './FilterTaskTable';
 
 function TaskList(){
     const data = React.useMemo(()=> fakeData, []) ;
@@ -17,33 +10,40 @@ function TaskList(){
         {
             Header: "Task Name",
             accessor: "name",
+            Filter: FilterTaskTable
         },
         {
             Header: "Team",
-            accessor:"team",
+            type : "text",
+            Filter: FilterTaskTable
         },
         {
             Header: "Assignee(s)",
             accessor: "assignees",
+            Filter: FilterTaskTable
         },
         {
             Header: "Status",
             accessor: "status",
+            Filter: FilterTaskTable
         },
         {
             Header: "Priority",
             accessor: "priority",
+            Filter: FilterTaskTable
         },
         {
             Header: "Due Date",
             accessor: "dueDate",
+            Filter: FilterTaskTable
         }
     ],
     [])
-
-    const {getTableProps, getTableBodyProps, headerGroups, rows, prepareRow} = useTable({columns, data})
+  
+    const {getTableProps, getTableBodyProps, headerGroups, rows, prepareRow} = useTable({columns, data}, useFilters)
     return(
         <div className='container'>
+            
             <table {...getTableProps()}>
                 <thead>
                     {headerGroups.map((headerGroup) => (
@@ -51,6 +51,7 @@ function TaskList(){
                             {headerGroup.headers.map((column) =>(
                                 <th {...column.getHeaderProps()}>
                             {column.render("Header")}
+                            <div>{column.canFilter ? column.render('Filter'): null}</div>
                             </th>
                             ))}
                         </tr>
