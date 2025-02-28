@@ -5,8 +5,7 @@
         "assignees": "James Jordan Jack Ella",
         "status": "In progress",
         "priority": "Low",
-        "dueDate": "2/28/2025",
-        "": ""
+        "dueDate": "2/28/2025"
     },
     {
         "name": "Task 2",
@@ -14,8 +13,7 @@
         "assignees": "James Jordan Jack Ella",
         "status": "In progress",
         "priority": "Low",
-        "dueDate": "2/28/2025",
-        "": ""
+        "dueDate": "2/28/2025"
     },
     {
         "name": "Task 3",
@@ -23,61 +21,6 @@
         "assignees": "Ben George Cindy Lia",
         "status": "No Started",
         "priority": "High",
-        "dueDate": "3/3/2025",
-        "": ""
-    },
-    {
-        "name": "",
-        "team": "",
-        "assignees": "",
-        "status": "",
-        "priority": "",
-        "dueDate": "",
-        "": ""
-    },
-    {
-        "name": "",
-        "team": "",
-        "assignees": "",
-        "status": "",
-        "priority": "",
-        "dueDate": "",
-        "": ""
-    },
-    {
-        "name": "",
-        "team": "",
-        "assignees": "",
-        "status": "",
-        "priority": "",
-        "dueDate": "",
-        "": ""
-    },
-    {
-        "name": "",
-        "team": "",
-        "assignees": "",
-        "status": "",
-        "priority": "",
-        "dueDate": "",
-        "": ""
-    },
-    {
-        "name": "",
-        "team": "",
-        "assignees": "",
-        "status": "",
-        "priority": "",
-        "dueDate": "",
-        "": ""
-    },
-    {
-        "name": "",
-        "team": "",
-        "assignees": "",
-        "status": "",
-        "priority": "",
-        "dueDate": "",
-        "": ""
+        "dueDate": "3/3/2025"
     }
 ]
