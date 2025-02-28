@@ -9,7 +9,7 @@ export const  FilterTaskTable = ( {column} ) => {
             <span>
                 Search:{' '}
                 <input type="text" value={filterValue || ''}
-                onChange={e => setFilter(e.target.value)} placeholder=''></input>
+                onChange={e => setFilter(e.target.value)} placeholder={column.accessor}></input>
             </span>
         </div>
       

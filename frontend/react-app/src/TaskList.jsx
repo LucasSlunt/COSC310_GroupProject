@@ -11,6 +11,7 @@ function TaskList(){
             Header: "Task Name",
             accessor: "name",
             Filter: FilterTaskTable
+            
         },
         {
             Header: "Team",
