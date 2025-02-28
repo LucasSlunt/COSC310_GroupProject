@@ -1,4 +1,4 @@
-import {useTable, useFilters} from 'react-table'
+import {useTable, useFilters, useSortBy} from 'react-table'
 import React from 'react';
 import "./TaskList.css"
 import fakeData from "./fakeTaskData.json"
@@ -14,7 +14,7 @@ function TaskList(){
         },
         {
             Header: "Team",
-            type : "text",
+            accessor: "team",
             Filter: FilterTaskTable
         },
         {
@@ -39,8 +39,8 @@ function TaskList(){
         }
     ],
     [])
-  
-    const { getTableBodyProps, getTableProps, rows, prepareRow, headerGroups} = useTable({columns, data}, useFilters)
+
+    const { getTableBodyProps, getTableProps, rows, prepareRow, headerGroups} = useTable({columns, data,}, useFilters, useSortBy)
     return(
         <div className='container'>
             
@@ -49,9 +49,12 @@ function TaskList(){
                     {headerGroups.map((headerGroup) => (
                         <tr {...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map((column) =>(
-                                <th {...column.getHeaderProps()}>
+                                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                             {column.render("Header")}
                             <div>{column.canFilter ? column.render('Filter'): null}</div>
+                            <span>
+                                {column.isSorted ? (column.isSortedDesc ? '⬇️':'⬆️'): '↕️'}
+                            </span>
                             </th>
                             ))}
                         </tr>
