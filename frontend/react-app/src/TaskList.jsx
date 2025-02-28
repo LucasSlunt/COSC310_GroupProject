@@ -40,7 +40,7 @@ function TaskList(){
     ],
     [])
   
-    const {getTableProps, getTableBodyProps, headerGroups, rows, prepareRow} = useTable({columns, data}, useFilters)
+    const { getTableBodyProps, getTableProps, rows, prepareRow, headerGroups} = useTable({columns, data}, useFilters)
     return(
         <div className='container'>
             
