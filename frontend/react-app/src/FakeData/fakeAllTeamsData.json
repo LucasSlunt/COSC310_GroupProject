@@ -1,0 +1,38 @@
+[
+    {
+        "id": "0",
+        "teamName": "Lucy Eats The Computer",
+        "teamMembers": [
+            {
+                "teamMemberId": "201",
+                "name": "John Doe",
+                "role": "admin",
+                "email": "john.doe@example.com"
+            },
+            {
+                "teamMemberId": "202",
+                "name": "Jane Smith",
+                "role": "teamLead",
+                "email": "jane.smith@example.com"
+            }
+        ]
+    },
+    {
+        "id": "1",
+        "teamName": "Lucy Doesn't Eats The Computer",
+        "teamMembers": [
+            {
+                "teamMemberId": "201",
+                "name": "John Doe",
+                "role": "admin",
+                "email": "john.doe@example.com"
+            },
+            {
+                "teamMemberId": "202",
+                "name": "Jane Smith",
+                "role": "teamLead",
+                "email": "jane.smith@example.com"
+            }
+        ]
+    }
+]

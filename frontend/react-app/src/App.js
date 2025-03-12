@@ -8,6 +8,7 @@ import ViewTask from './pages/ViewTask';
 import Profile from './pages/Profile'
 import TeamTasks from './pages/TeamTasks';
 import MyTasks from './pages/MyTasks';
+import AdminPanel from './pages/AdminPanel';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/team-tasks" element={<TeamTasks/>}/>
           <Route path="/my-tasks" element={<MyTasks/>}/>
+          <Route path="/admin-panel" element={<AdminPanel/>}/>
 
           {/*Default path should be login, unless specified */}
           <Route path="/" exact element={<Login/>} />
