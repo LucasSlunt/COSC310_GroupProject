@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 
 import jakarta.transaction.Transactional;
 
@@ -29,7 +28,6 @@ import com.example.task_manager.service.TeamService;
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class AdminServiceTest {
 
     @Autowired
@@ -59,19 +57,95 @@ public class AdminServiceTest {
     @Autowired
     private AuthInfoRepository authInfoRepository;
 
-    @Test
-    void testCreateAdmin() {
-        AdminDTO adminDTO = adminService.createAdmin("Admin" + System.nanoTime(), "admin" + System.nanoTime() + "@example.com", "password");
-        assertNotNull(adminDTO);
-        assertTrue(adminDTO.getUserEmail().contains("@example.com"));
-    }   
+	private AdminDTO admin;
+	private TeamMemberDTO teamMember;
+	private TaskDTO unlockedTask;
+	private TaskDTO lockedTask;
+	private Team team;
 
-    @Test
-    void testDeleteAdmin() {
-        AdminDTO admin = adminService.createAdmin("AdminDelete" + System.nanoTime(), "delete_admin" + System.nanoTime() + "@example.com", "password");
-        adminService.deleteAdmin(admin.getAccountId());
-        assertFalse(adminRepository.findById(admin.getAccountId()).isPresent());
-    }
+	/*
+	 * Added nanoTime to each string to ensure no entities with the same name are added twice, which will cause an error
+	 */
+
+	@BeforeEach
+	void setUp() {
+		isAssignedRepository.deleteAllInBatch();
+		isMemberOfRepository.deleteAllInBatch();
+		taskRepository.deleteAllInBatch();
+		authInfoRepository.deleteAllInBatch();
+		adminRepository.deleteAllInBatch();
+		teamRepository.deleteAllInBatch();
+		teamMemberRepository.deleteAllInBatch();
+
+		admin = adminService.createAdmin("Admin Name", "admin" + System.nanoTime() + "@example.com","defaultpw");
+		teamMember = adminService.createTeamMember("TM Name", "teamMember" + System.nanoTime() + "@example.com","defaultpw");
+
+		team = new Team();
+		team.setTeamName("Team Name " + System.nanoTime());
+		team = teamRepository.save(team);
+
+		TaskRequestDTO taskRequest = new TaskRequestDTO(
+			"Unlocked Task",
+			"Task Description",
+			false,
+			"Open",
+			LocalDate.now(),
+			null,
+			team.getTeamId()
+		);
+
+		unlockedTask = adminService.createTask(taskRequest);
+
+		taskRequest = new TaskRequestDTO(
+			"Locked Task",
+			"Task Description",
+			true,
+			"Open",
+			LocalDate.now(),
+			null,
+			team.getTeamId()
+		);
+
+		lockedTask = adminService.createTask(taskRequest);
+	}
+
+	// Try to create admin account
+	@Test
+	void testCreateAdmin() {
+		AdminDTO adminDTO = adminService.createAdmin("Admin Name Testing", "admin" + System.nanoTime() + "@example.com","defaultpw");
+
+		assertNotNull(adminDTO);
+		assertEquals("Admin Name Testing", adminDTO.getUserName());
+	}	
+
+	// try to create admin with the same name
+	@Test
+	void testCreateAdminExistingName() {
+		AdminDTO adminDTO = adminService.createAdmin("John Doe", "admin" + System.nanoTime() + "@example.com","defaultpw");
+
+		Exception exception = assertThrows(RuntimeException.class,
+				() -> adminService.createAdmin("John Doe", "admin" + System.nanoTime() + "@example.com","defaultpw"));
+
+		assertNotNull(adminDTO);
+	}
+	
+	// try to create admin with the same email
+	@Test
+	void testCreateAdminExistingEmail() { 
+		AdminDTO adminDTO = adminService.createAdmin("John Doe", "admin_email@example.com","defaultpw");
+
+		Exception exception = assertThrows(RuntimeException.class,
+				() -> adminService.createAdmin("Alice Wonder", "admin_email@example.com","defaultpw"));
+
+		assertNotNull(adminDTO);
+	}
+	
+	@Test
+	void testDeleteAdmin() {
+		adminService.deleteAdmin(admin.getAccountId());
+		Optional<Admin> found = adminRepository.findById(admin.getAccountId());
+		assertFalse(found.isPresent());
+	}
 
     @Test
     void testModifyAdminName() {

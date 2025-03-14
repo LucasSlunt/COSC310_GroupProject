@@ -64,8 +64,7 @@ public class IsMemberOfService {
 
 		System.out.println("DOCTOR NEFARIO");
 
-		team = teamRepository.findById(teamId).orElseThrow(() -> new RuntimeException("RAHHHH can't find it"));
-		System.out.println("bruh");
+		team = teamRepository.findById(teamId).orElseThrow(() -> new RuntimeException("Team not found with ID " + teamId));
 
 		// Return DTO
 		return convertToDTO(isMemberOf);

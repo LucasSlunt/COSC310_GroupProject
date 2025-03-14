@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.NoSuchElementException;
 
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
 @RestController
 @RequestMapping("/api/admin")
 //This is an admin controller

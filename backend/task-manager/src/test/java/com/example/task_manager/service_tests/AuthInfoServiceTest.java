@@ -3,8 +3,7 @@ package com.example.task_manager.service_tests;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +12,6 @@ import jakarta.transaction.Transactional;
 import com.example.task_manager.DTO.AuthInfoDTO;
 import com.example.task_manager.entity.Admin;
 import com.example.task_manager.entity.TeamMember;
-import com.example.task_manager.repository.AdminRepository;
 import com.example.task_manager.repository.AuthInfoRepository;
 import com.example.task_manager.repository.TeamMemberRepository;
 import com.example.task_manager.service.AuthInfoService;
@@ -26,29 +24,26 @@ public class AuthInfoServiceTest {
     @Autowired
     private AuthInfoService authInfoService;
 
-    @Autowired
-    private AdminRepository adminRepository;
+	@Autowired
+	private TeamMemberRepository teamMemberRepository;
+	
+	@Autowired
+	private AuthInfoRepository authInfoRepository;
 
-    @Autowired
-    private TeamMemberRepository teamMemberRepository;
+    private TeamMember teamMember;
+    private Admin admin;
 
-    @Autowired
-    private AuthInfoRepository authInfoRepository;
+    @BeforeEach
+	void setUp() {
+		authInfoRepository.deleteAllInBatch();
+        //teamMember repo needs to be deleted last, or FK constraints will cause errors
+        teamMemberRepository.deleteAllInBatch();
 
-    private TeamMember createUniqueTeamMember() {
-        return teamMemberRepository.save(new TeamMember(
-            "TeamMember_" + System.nanoTime(),
-            "team_member" + System.nanoTime() + "@secure.com",
-            "defaultpw"
-        ));
-    }
-
-    private Admin createUniqueAdmin() {
-        return adminRepository.save(new Admin(
-            "Admin_" + System.nanoTime(),
-            "admin_" + System.nanoTime() + "@secure.com",
-            "adminpw"
-        ));
+        teamMember = new TeamMember("Authentication Tester", "auth_test" + System.nanoTime() + "@secure.com","defaultpw");
+        teamMember = teamMemberRepository.save(teamMember);
+         
+        admin = new Admin("Admin User", "admin" + System.nanoTime() + "@secure.com", "adminpw");
+        admin = teamMemberRepository.save(admin);
     }
 
     @Test
@@ -85,7 +80,8 @@ public class AuthInfoServiceTest {
 
     @Test
     void testAuthenticateUserWithSuccess() {
-        TeamMember teamMember = createUniqueTeamMember();
+        //List<TeamMember> allMembers = teamMemberRepository.findAll();
+
         AuthInfoDTO response = authInfoService.authenticateUser(teamMember.getAccountId(), "defaultpw");
 
         assertNotNull(response);

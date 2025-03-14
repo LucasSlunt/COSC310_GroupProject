@@ -13,7 +13,6 @@ import jakarta.transaction.Transactional;
 
 import com.example.task_manager.DTO.TaskDTO;
 import com.example.task_manager.DTO.TaskRequestDTO;
-import com.example.task_manager.DTO.TeamMemberDTO;
 import com.example.task_manager.entity.Admin;
 import com.example.task_manager.entity.Task;
 import com.example.task_manager.entity.Team;
@@ -21,10 +20,8 @@ import com.example.task_manager.entity.TeamMember;
 import com.example.task_manager.repository.TaskRepository;
 import com.example.task_manager.repository.TeamMemberRepository;
 import com.example.task_manager.repository.TeamRepository;
-import com.example.task_manager.repository.AdminRepository;
 import com.example.task_manager.repository.AuthInfoRepository;
 import com.example.task_manager.repository.IsAssignedRepository;
-import com.example.task_manager.repository.IsMemberOfRepository;
 import com.example.task_manager.service.AuthInfoService;
 import com.example.task_manager.service.TeamMemberService;
 
@@ -85,6 +82,27 @@ public class TeamMemberServiceTest {
             LocalDate.now()
         ));
     }
+	private Task task;
+	private TeamMember teamMember;
+	private Team team;
+
+	@BeforeEach
+	void setUp() {
+		isAssignedRepository.deleteAllInBatch();
+		taskRepository.deleteAllInBatch();
+		teamRepository.deleteAllInBatch();
+		authInfoRepository.deleteAllInBatch();
+		teamMemberRepository.deleteAllInBatch();
+
+		teamMember = new TeamMember("Team Member", "teamMember" + System.nanoTime() + "@example.com","defaultpw");
+		teamMember = teamMemberRepository.save(teamMember);
+
+		team = new Team("Team Name " + System.nanoTime(), teamMember);
+		team = teamRepository.save(team);
+
+		task = new Task("Task Title " + System.nanoTime(), "Task Description", team, false, "Open", LocalDate.now());
+		task = taskRepository.save(task);
+	}
 
     @Test
     void testCreateTask() {

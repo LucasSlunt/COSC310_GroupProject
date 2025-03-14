@@ -10,10 +10,7 @@ import jakarta.transaction.Transactional;
 
 import com.example.task_manager.DTO.TeamDTO;
 import com.example.task_manager.DTO.TeamMemberDTO;
-import com.example.task_manager.repository.AdminRepository;
 import com.example.task_manager.repository.AuthInfoRepository;
-import com.example.task_manager.repository.IsAssignedRepository;
-import com.example.task_manager.repository.IsMemberOfRepository;
 import com.example.task_manager.repository.TaskRepository;
 import com.example.task_manager.repository.TeamMemberRepository;
 import com.example.task_manager.repository.TeamRepository;
@@ -69,6 +66,21 @@ public class IsMemberOfServiceTest {
             "Team_" + System.nanoTime(),
             teamLead.getAccountId()
         );
+    private TeamDTO team;
+    private TeamMemberDTO teamLead;
+    private TeamMemberDTO teamMember;
+
+    @BeforeEach
+    void setUp() {
+        // Clear DB to avoid conflicts
+        taskRepository.deleteAllInBatch();
+        teamRepository.deleteAllInBatch();
+        authInfoRepository.deleteAllInBatch();
+        teamMemberRepository.deleteAllInBatch();
+
+        teamLead = adminService.createTeamMember("Team Lead", "team_lead" + System.nanoTime() + "@example.com","defaultpw");
+        team = teamService.createTeam("Development Team " + System.nanoTime(), teamLead.getAccountId());
+        teamMember = adminService.createTeamMember("Team Member", "team_member" + System.nanoTime() + "@example.com","defaultpw");
     }
 
     @Test

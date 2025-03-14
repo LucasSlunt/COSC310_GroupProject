@@ -14,7 +14,7 @@ import com.example.task_manager.DTO.IsAssignedDTO;
 import com.example.task_manager.entity.Task;
 import com.example.task_manager.entity.Team;
 import com.example.task_manager.entity.TeamMember;
-import com.example.task_manager.repository.IsAssignedRepository;
+import com.example.task_manager.repository.AuthInfoRepository;
 import com.example.task_manager.repository.TaskRepository;
 import com.example.task_manager.repository.TeamMemberRepository;
 import com.example.task_manager.repository.TeamRepository;
@@ -25,8 +25,8 @@ import com.example.task_manager.service.IsAssignedService;
 @Transactional
 public class IsAssignedServiceTest {
 
-    @Autowired
-    private IsAssignedService isAssignedService;
+	@Autowired
+	private IsAssignedService isAssignedService;
 
     @Autowired
     private TeamMemberRepository teamMemberRepository;
@@ -34,37 +34,32 @@ public class IsAssignedServiceTest {
     @Autowired
     private TaskRepository taskRepository;
 
-    @Autowired
-    private TeamRepository teamRepository;
+	@Autowired
+	private TeamRepository teamRepository;
+	
+	@Autowired
+	private AuthInfoRepository authInfoRepository;
 
-    @Autowired
-    private IsAssignedRepository isAssignedRepository;
+	private Task task;
+	private TeamMember teamMember;
+	private Team team;
 
-    private TeamMember createUniqueTeamMember() {
-        return teamMemberRepository.save(new TeamMember(
-            "TeamMember_" + System.nanoTime(),
-            "team_member" + System.nanoTime() + "@example.com",
-            "defaultpw"
-        ));
-    }
+	@BeforeEach
+	void setUp() {
+		taskRepository.deleteAllInBatch();
+		teamRepository.deleteAllInBatch();
+		authInfoRepository.deleteAllInBatch();
+		teamMemberRepository.deleteAllInBatch();
 
-    private Team createUniqueTeam(TeamMember teamLead) {
-        return teamRepository.save(new Team(
-            "Team_" + System.nanoTime(),
-            teamLead
-        ));
-    }
+		teamMember = new TeamMember("Team Member", "teamMember" + System.nanoTime() + "@example.com","defaultpw");
+		teamMember = teamMemberRepository.save(teamMember);
 
-    private Task createUniqueTask(Team team) {
-        return taskRepository.save(new Task(
-            "Task_" + System.nanoTime(),
-            "Description for task",
-            team,
-            false,
-            "Open",
-            LocalDate.now()
-        ));
-    }
+		team = new Team("Team Name " + System.nanoTime(), teamMember);
+		team = teamRepository.save(team);
+
+		task = new Task("Task Title " + System.nanoTime(), "", team, false, "Open", LocalDate.now());
+		task = taskRepository.save(task);
+	}
 
     @Test
     void testAssignToTask() {

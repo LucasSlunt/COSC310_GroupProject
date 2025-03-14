@@ -5,7 +5,11 @@ on:
   push:
     branches:
       - main
-      - Github-Secrets-Injecting
+      - CI-Improvements
+  pull_request:
+    branches:
+      - main
+
 
 jobs:
   build:
