@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.example.task_manager.entity_tests.AuthInfoEntityTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.222 s -- in com.example.task_manager.entity_tests.AuthInfoEntityTest

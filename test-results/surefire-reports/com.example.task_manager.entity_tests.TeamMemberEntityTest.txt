@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.example.task_manager.entity_tests.TeamMemberEntityTest
+-------------------------------------------------------------------------------
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.681 s -- in com.example.task_manager.entity_tests.TeamMemberEntityTest

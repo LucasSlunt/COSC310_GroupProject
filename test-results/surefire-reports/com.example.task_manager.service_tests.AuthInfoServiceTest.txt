@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.example.task_manager.service_tests.AuthInfoServiceTest
+-------------------------------------------------------------------------------
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.022 s -- in com.example.task_manager.service_tests.AuthInfoServiceTest
