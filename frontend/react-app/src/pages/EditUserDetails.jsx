@@ -13,50 +13,44 @@ export default function EditUserDetails(){
     const [loading, setLoading] = useState(true);
 
     const onSubmit = async(data)=>{
-        const admin = await isAdmin(accountToEdit);
-        if(data.userName !== accountInfo.userName){
-            if(admin){
-                await changeAdminName(data.userName)
-            }else{  
-                await changeUserName(data.userName);
+        //const admin = await isAdmin(accountToEdit); when is admin is fixed
+        const admin = true;
+        console.log(admin)
+        try{
+            if(data.userName !== accountInfo.userName){
+                if(admin){
+                    await changeAdminName(data.userName)
+                }else{  
+                    await changeUserName(data.userName);
+                }
+            }if(data.password !== undefined){
+                console.log(data.password)
+            }if(data.userEmail !== accountInfo.userEmail){
+                if(admin){
+                    await changeAdminEmail(data.userEmail);
+                }else{  
+                    await changeUserEmail(data.userEmail);
+                }
             }
-        }if(data.password !== undefined){
-            console.log(data.password)
-        }if(data.userEmail !== accountInfo.userEmail){
-            if(admin){
-                await changeAdminEmail(data.userEmail);
-            }else{  
-                await changeUserEmail(data.userName);
-            }
+            await alert("User Details set");
+            window.location.href="/all-users";
+        }catch(error){
+            alert("FAILED TO SET USER DETAILS")
         }
+        
     }
     async function changeAdminName(newUserName){
-        try {
             await modifyAdminName(accountToEdit, newUserName);
-        } catch (error) {
-            console.log(error)
-        }
     }
     async function changeAdminEmail(newUserName){
-        try {
             await modifyAdminEmail(accountToEdit, newUserName);
-        } catch (error) {
-            console.log(error)
-        }
     }
     async function changeUserName(newUserName){
-        try {
             await modifyTeamMemberName(accountToEdit, newUserName);
-        } catch (error) {
-            console.log(error)
-        }
     }
     async function changeUserEmail(newUserName){
-        try {
             await modifyTeamMemberEmail(accountToEdit, newUserName);
-        } catch (error) {
-            console.log(error)
-        }
+
     }
 
 
@@ -82,6 +76,7 @@ export default function EditUserDetails(){
     return(
         <div>
             <Header/>
+            {accountToEdit}
             <form onSubmit={handleSubmit(onSubmit)}>
                 Change user info for: {accountInfo.userName}
                 <label htmlFor="">
@@ -93,7 +88,7 @@ export default function EditUserDetails(){
                 <label htmlFor="">
                    <div>
                         Email:
-                        <input type="email" defaultValue={accountInfo.userEmail} id="" />
+                        <input type="text" defaultValue={accountInfo.userEmail} id="" {...register("userEmail")}/>
                    </div>
                 </label>
                 <label htmlFor="">
