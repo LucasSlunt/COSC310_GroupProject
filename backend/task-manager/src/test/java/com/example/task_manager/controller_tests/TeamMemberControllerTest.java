@@ -10,6 +10,8 @@ import com.example.task_manager.DTO.TaskDTO;
 import com.example.task_manager.DTO.TaskRequestDTO;
 import com.example.task_manager.DTO.TeamDTO;
 import com.example.task_manager.DTO.IsAssignedDTO;
+import com.example.task_manager.DTO.PasswordChangeRequestDTO;
+import com.example.task_manager.DTO.ResetPasswordRequestDTO;
 import com.example.task_manager.controller.TeamMemberController;
 import com.example.task_manager.service.TeamMemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -135,13 +137,69 @@ public class TeamMemberControllerTest {
                 .andExpect(jsonPath("$.taskId").value(taskId));
     }
 
-    /**
-     * Placeholder: Change Password
-     */
-    @Test
-    void testChangePassword() throws Exception {
-        // TODO: Implement Change Password Test
-    }
+        /**
+         * Placeholder: Change Password
+         */
+        @Test
+        void testChangePassword() throws Exception {
+                PasswordChangeRequestDTO requestDTO = new PasswordChangeRequestDTO(123, "oldPassword", "newPassword");
+
+                doNothing().when(teamMemberService).changePassword(123, "oldPassword", "newPassword");
+
+                mockMvc.perform(post("/api/tasks/team-members/123/change-password")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(requestDTO)))
+                                .andExpect(status().isNoContent());
+
+                verify(teamMemberService, times(1)).changePassword(123, "oldPassword", "newPassword");
+        }
+
+        //testing thast the change password fails correctly
+        @Test
+        void testChangePasswordFailure() throws Exception {
+                PasswordChangeRequestDTO requestDTO = new PasswordChangeRequestDTO(123, "wrongOldPass", "newPassword");
+
+                doThrow(new RuntimeException("Old Password is incorrect")).when(teamMemberService)
+                        .changePassword(123, "wrongOldPass", "newPassword");
+
+                mockMvc.perform(post("/api/tasks/team-members/123/change-password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDTO)))
+                        .andExpect(status().isBadRequest());
+
+                verify(teamMemberService, times(1)).changePassword(123, "wrongOldPass", "newPassword");
+        }
+        
+        //testing resetting a password, old password not required
+        @Test
+        void testResetPasswordSuccess() throws Exception {
+                ResetPasswordRequestDTO requestDTO = new ResetPasswordRequestDTO(123, "newSecurePassword");
+
+                doNothing().when(teamMemberService).resetPassword(123, "newSecurePassword");
+
+                mockMvc.perform(post("/api/tasks/team-members/123/reset-password")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(requestDTO)))
+                                .andExpect(status().isNoContent());
+
+                verify(teamMemberService, times(1)).resetPassword(123, "newSecurePassword");
+        }
+        
+        //testing that it fails correctly
+        @Test
+        void testResetPasswordFailure() throws Exception {
+                ResetPasswordRequestDTO requestDTO = new ResetPasswordRequestDTO(123, "newSecurePassword");
+
+                doThrow(new RuntimeException("User not found")).when(teamMemberService)
+                        .resetPassword(123, "newSecurePassword");
+
+                mockMvc.perform(post("/api/tasks/team-members/123/reset-password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDTO)))
+                        .andExpect(status().isBadRequest());
+
+                verify(teamMemberService, times(1)).resetPassword(123, "newSecurePassword");
+        }
 
      @Test
     void testGetTeamsForMember() throws Exception {

@@ -481,6 +481,16 @@ All API requests should be made to the following base URL (Spring Boot's default
     ```
     - **Description:** Updates the password field for a team member.
 
+- **Reset Password:** `POST /team-members/{teamMemberId}/reset-password`
+    - **Request Body:**
+    ```json
+    {
+        "newPassword": "newPass456"
+    }
+    ```
+    - **Description:** Resets the password field for a team member.
+
+
 - **Get All Teams for a Team Member:** `GET /{teamMemberId}/teams`
     - **Response Body:**
     ```json
