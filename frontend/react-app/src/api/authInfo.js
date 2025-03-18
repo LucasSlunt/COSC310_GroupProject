@@ -25,12 +25,12 @@ export const login = async (accountId, password) => {
 
 export const isAdmin = async (teamMemberId) => {
     try {
-        const response = await fetch(`${BASE_URL}/is-admin`, {
-            method: 'POST',
+        const response = await fetch(`${BASE_URL}/${teamMemberId}/is-admin`, {
+            method: 'GET',
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({teamMemberId})
+            //body: JSON.stringify({teamMemberId})
         });
 
         if (!response.ok) {

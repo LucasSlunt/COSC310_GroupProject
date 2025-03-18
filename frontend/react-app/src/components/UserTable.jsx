@@ -3,14 +3,15 @@ import React from 'react';
 import "../css/TaskList.css"
 import SearchFilterSort from './SearchFilterSort';
 import { useState} from 'react';
+import {Link} from 'react-router-dom'
 const AllTeams = [
     {
         name: "Team1",
-        id: "1",
+        id: "12746",
         members: [
             {
                 name:"Liam",
-                memberID: "0",
+                memberID: "12746",
                 email: "liamDig@jmail.com",
                 role: "admin"
             }, 
@@ -120,6 +121,17 @@ function UserTable(){
                 <button id= {"delete " + original.value} value={original.value} onClick={(e)=>deleteUser(e)}>
                     Delete
                 </button>
+              )
+        },
+        {
+            Header: "",
+            accessor: "edit",
+            Cell: (original) => (
+                <Link to='/edit-user-details' state={{accountToEdit: original.cell.row.values.del}}>
+                <button key= {"edit" + original.cell.row.values.del} id ={"edit" + original.cell.row.values.del}>
+                    Edit
+                </button>
+                </Link>
               )
         }
     ],[searchQuery, loadThisTeam]

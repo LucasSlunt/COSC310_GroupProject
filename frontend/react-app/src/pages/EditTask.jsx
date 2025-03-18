@@ -1,4 +1,4 @@
-import {Link, useLocation} from 'react-router-dom'
+import {useLocation} from 'react-router-dom'
 import EditTaskForm from '../components/EditTaskForm'
 import Header from '../components/Header'
 import '../css/EditTask.css'
