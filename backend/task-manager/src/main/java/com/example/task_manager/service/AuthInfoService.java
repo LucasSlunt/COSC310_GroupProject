@@ -26,12 +26,18 @@ public class AuthInfoService {
 
     public boolean approveLogin(int teamMemberId, String enteredPassword) {
         boolean isSuccess = false;
+
         TeamMember teamMember = teamMemberRepository.findById(teamMemberId)
-			.orElseThrow(() -> new RuntimeException("Team Member not found with ID: " + teamMemberId));
+                .orElseThrow(() -> new RuntimeException("Team Member not found with ID: " + teamMemberId));
+
         String TMHashedPassword = teamMember.getAuthInfo().getHashedPassword();
+
         String TMSalt = teamMember.getAuthInfo().getSalt();
         String enteredHashedPassword = hashPassword(enteredPassword, TMSalt);
-        if (enteredHashedPassword.equals(TMHashedPassword)) {isSuccess = true;}
+
+        if (enteredHashedPassword.equals(TMHashedPassword)) {
+            isSuccess = true;
+        }
         return isSuccess;
     }
 

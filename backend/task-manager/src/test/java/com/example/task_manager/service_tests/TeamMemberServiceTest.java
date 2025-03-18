@@ -222,6 +222,40 @@ public class TeamMemberServiceTest {
     }
 
     @Test
+    void testChangePasswordTM() {
+        TeamMember teamMember = createUniqueTeamMember();
+        int teamMemberId = teamMember.getAccountId();
+
+        teamMemberService.resetPassword(teamMemberId, "coolernewpassword");
+
+        assertTrue(authInfoService.approveLogin(teamMemberId, "coolernewpassword"));
+    }
+
+    @Test
+    void testChangePasswordTMWithNullPassword() {
+        TeamMember teamMember = createUniqueTeamMember();
+        int teamMemberId = teamMember.getAccountId();
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            teamMemberService.resetPassword(teamMemberId, null);
+        });
+
+        assertEquals("Cannot change password to null or empty string", exception.getMessage());
+    }
+
+    @Test
+    void testChangePasswordTMWithEmptyPassword() {
+        TeamMember teamMember = createUniqueTeamMember();
+        int teamMemberId = teamMember.getAccountId();
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            teamMemberService.resetPassword(teamMemberId, null);
+        });
+        
+        assertEquals("Cannot change password to null or empty string", exception.getMessage());
+    }
+
+    @Test
     void testIsAdmin() {
         Admin admin = new Admin("Admin_" + System.nanoTime(), "admin_" + System.nanoTime() + "@example.com", "adminpw");
         admin = teamMemberRepository.save(admin);

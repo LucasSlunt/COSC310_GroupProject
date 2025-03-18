@@ -180,24 +180,42 @@ public class TeamMemberService {
 	 * Currently, this method is a placeholder for future implementation.
 	 *
 	 * @param teamMemberId The ID of the team member.
-	 * @param oldPassword  The current password (not yet implemented).
-	 * @param newPassword  The new password to set (not yet implemented).
+	 * @param oldPassword  The current password  
+	 * @param newPassword  The new password to set 
 	 */
 	public void changePassword(int teamMemberId, String oldPassword, String newPassword) {
-		if (newPassword == null || newPassword.isEmpty()){
+		if (newPassword == null || newPassword.isEmpty()) {
 			throw new RuntimeException("Cannot change password to null or empty string");
 		}
 		TeamMember teamMember = teamMemberRepository.findById(teamMemberId)
-			.orElseThrow(() -> new RuntimeException("Team Member not found with ID: " + teamMemberId));
-			
-			boolean isOldPasswordVerified = authInfoService.approveLogin(teamMember.getAccountId(),oldPassword);
-			if (isOldPasswordVerified){
-				String salt = teamMember.getAuthInfo().getSalt();
-				String newHashedPassword = AuthInfoService.hashPassword(newPassword, salt);
-				teamMember.getAuthInfo().setHashedPassword(newHashedPassword);
-			} else{
-				throw new RuntimeException("Old Password is inncorect");
-			}
+				.orElseThrow(() -> new RuntimeException("Team Member not found with ID: " + teamMemberId));
+
+		boolean isOldPasswordVerified = authInfoService.approveLogin(teamMember.getAccountId(), oldPassword);
+		if (isOldPasswordVerified) {
+			String salt = teamMember.getAuthInfo().getSalt();
+			String newHashedPassword = AuthInfoService.hashPassword(newPassword, salt);
+			teamMember.getAuthInfo().setHashedPassword(newHashedPassword);
+		} else {
+			throw new RuntimeException("Old Password is inncorrect");
+		}
+	}
+
+	//changing a password without the old password
+	public void resetPassword(int teamMemberId, String newPassword) {
+		if (newPassword == null || newPassword.isEmpty()) {
+			throw new RuntimeException("Cannot change password to null or empty string");
+		}
+
+		TeamMember teamMember = teamMemberRepository.findById(teamMemberId)
+				.orElseThrow(() -> new RuntimeException("Team Member not found with ID: " + teamMemberId));
+
+		String newSalt = AuthInfoService.generateSalt();
+		String newHashedPassword = AuthInfoService.hashPassword(newPassword, newSalt);
+
+		teamMember.getAuthInfo().setHashedPassword(newHashedPassword);
+		teamMember.getAuthInfo().setSalt(newSalt);
+
+		teamMemberRepository.save(teamMember);
 	}
 
 	public TeamMemberDTO getTeamMember(int accountId) {

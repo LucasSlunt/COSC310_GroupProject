@@ -2,6 +2,7 @@ package com.example.task_manager.controller;
 
 import com.example.task_manager.DTO.IsAssignedDTO;
 import com.example.task_manager.DTO.PasswordChangeRequestDTO;
+import com.example.task_manager.DTO.ResetPasswordRequestDTO;
 import com.example.task_manager.DTO.TaskDTO;
 import com.example.task_manager.DTO.TaskRequestDTO;
 import com.example.task_manager.DTO.TeamDTO;
@@ -74,6 +75,18 @@ public class TeamMemberController {
             @RequestBody PasswordChangeRequestDTO request) {
         try {
             teamMemberService.changePassword(teamMemberId, request.getOldPassword(), request.getNewPassword());
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/team-members/{teamMemberId}/reset-password")
+    public ResponseEntity<?> resetPassword(@PathVariable int teamMemberId,
+            @RequestBody ResetPasswordRequestDTO request) {
+
+        try {
+            teamMemberService.resetPassword(teamMemberId, request.getNewPassword());
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
