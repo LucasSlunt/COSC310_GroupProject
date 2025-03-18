@@ -195,6 +195,8 @@ public class TeamMemberService {
 				String salt = teamMember.getAuthInfo().getSalt();
 				String newHashedPassword = AuthInfoService.hashPassword(newPassword, salt);
 				teamMember.getAuthInfo().setHashedPassword(newHashedPassword);
+			} else{
+				throw new RuntimeException("Old Password is inncorect");
 			}
 	}
 

@@ -104,9 +104,7 @@ describe('Team Member API', () => {
 
     //test: changing a password
     test('chanegPassword should return success on valid password change', async () => {
-        const mockResponse = { sucess: true };
-
-        fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
+        const mockResponse = true;
 
         const result = await changePassword(5, "oldPassword", "newPassword");
 
@@ -116,7 +114,7 @@ describe('Team Member API', () => {
             body: JSON.stringify({oldPassword: "oldPassword", newPassword: "newPassword"})
         });
 
-        expect(result).toEqual(mockResponse);
+        expect(result.ok).toEqual(mockResponse);
     });
 
     //test: getting all teams for a team member

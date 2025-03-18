@@ -88,6 +88,7 @@ export const assignMemberToTask = async (taskId, teamMemberId) => {
 
 //Change password
 export const changePassword = async (teamMemberId, oldPassword, newPassword) => {
+    console.log(JSON.stringify({oldPassword, newPassword}))
     try {
         const response = await fetch(`${BASE_URL}/team-members/${teamMemberId}/change-password`, {
             method: 'POST',
@@ -97,10 +98,9 @@ export const changePassword = async (teamMemberId, oldPassword, newPassword) => 
 
         if (!response.ok) {
             console.error(`Failed to change password: ${response.status} ${response.statusText}`);
-            return null;
+            return response;
         }
-
-        return await response.json();
+        return await response;
     }
     catch (error) {
         console.error("Error changing password: ", error);

@@ -14,6 +14,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import CreateAccount from './pages/CreateAccount';
 import AdminPanel from './pages/AdminPanel';
 import CreateTask from './pages/CreateTask';
+import ChangePassword from './pages/ChangePassword';
 
 
 
@@ -33,6 +34,7 @@ function App() {
           <Route path="/create-task" element={<ProtectedRoute allowedRoles={['admin','teamMember']} protectedContent={<CreateTask/>} urlReirect={"/login"}></ProtectedRoute>}/>
           <Route path="/edit-task" element={<ProtectedRoute allowedRoles={['admin','teamMember']} protectedContent={<EditTask/>} urlReirect={"/login"}></ProtectedRoute>}/>
           <Route path="/admin-panel" element={<ProtectedRoute allowedRoles={['admin']} protectedContent={<AdminPanel/>} urlReirect={"/home"}></ProtectedRoute>}/>
+          <Route path="/change-password" element={<ProtectedRoute allowedRoles={['admin','teamMember']} protectedContent={<ChangePassword/>} urlReirect={"/login"}></ProtectedRoute>}/>
 
           {/*Default path should be login, unless specified */}
           <Route path="/" exact element={<Login/>} />
