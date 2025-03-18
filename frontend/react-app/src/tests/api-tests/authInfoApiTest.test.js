@@ -34,10 +34,9 @@ describe('AuthInfo API', () => {
 
         const response = await isAdmin(1);
 
-        expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/is-admin`, {
-            method: 'POST',
+        expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/1/is-admin`, {
+            method: 'GET',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ teamMemberId: 1 })
         });
 
         expect(response).toBe(true);
@@ -49,10 +48,9 @@ describe('AuthInfo API', () => {
 
         const response = await isAdmin(1);
 
-        expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/is-admin`, {
-            method: 'POST',
+        expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/1/is-admin`, {
+            method: 'GET',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ teamMemberId: 1 })
         });
 
         expect(response).toBe(false);

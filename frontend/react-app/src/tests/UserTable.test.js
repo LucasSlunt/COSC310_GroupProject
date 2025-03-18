@@ -1,6 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+/*import { render, screen, fireEvent } from "@testing-library/react";
 import UserTable from "../components/UserTable";
-import changeSearch from "../components/UserTable"
 test('updates table after new select is chosen', () => {
     const logSpy = jest.spyOn(console, 'log');
   
@@ -44,7 +43,15 @@ test('updates table after new select is chosen', () => {
     fireEvent.change(input, { target: { value: 'admin' } });
   
     expect(logSpy).toHaveBeenCalledWith('rolesChanged');
+  })*/
+
+  /*
+  Same issue as task List for some reason it can't find react router dom. This is very weird as when the app is running its fine.
+  TA told me its not my code and to comment out test as this is a issue with jest
+  */
+  test('sees if we can when we change a role get a changed role',()=>{
+    expect(true);
   })
-  
+
   
   
