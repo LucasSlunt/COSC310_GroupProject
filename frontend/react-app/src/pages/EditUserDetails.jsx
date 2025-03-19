@@ -76,25 +76,31 @@ export default function EditUserDetails(){
     return(
         <div>
             <Header/>
-            {accountToEdit}
             <form onSubmit={handleSubmit(onSubmit)}>
                 Change user info for: {accountInfo.userName}
                 <label htmlFor="">
                    <div>
                         UserName:
-                        <input type="text" defaultValue={accountInfo.userName} id="" {...register("userName")}/>
+                        <input type="text" defaultValue={accountInfo.userName} id="" {...register("userName",
+                            {
+                                required: true
+                            }
+                        )}/>
                    </div>
                 </label>
                 <label htmlFor="">
                    <div>
                         Email:
-                        <input type="text" defaultValue={accountInfo.userEmail} id="" {...register("userEmail")}/>
+                        <input type="text" defaultValue={accountInfo.userEmail} id="" {...register("userEmail",
+                            {
+                                required: true
+                            })}/>
                    </div>
                 </label>
                 <label htmlFor="">
                    <div>
                         Password:
-                        <input type="password" id="" />
+                        <input type="password" id="" {...register("password")}/>
                    </div>
                 </label>
                 <button type="submit">Change userInfo</button>
