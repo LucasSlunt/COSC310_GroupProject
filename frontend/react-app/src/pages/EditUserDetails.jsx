@@ -11,29 +11,51 @@ export default function EditUserDetails(){
     const { accountToEdit } = location.state
     const [accountInfo, setAccountInfo] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isShown, setIsShown] = useState(false)
 
     const onSubmit = async(data)=>{
         //const admin = await isAdmin(accountToEdit); when is admin is fixed
         const admin = true;
-        console.log(admin)
         try{
+            /*did UserDetails change is for messaging to user
+            -1 means custom message
+             0 means nothing was changed
+             1 means something was changed
+            */
+            let didUserDetailsChange = 0;
             if(data.userName !== accountInfo.userName){
                 if(admin){
                     await changeAdminName(data.userName)
                 }else{  
                     await changeUserName(data.userName);
                 }
-            }if(data.password !== undefined){
+                didUserDetailsChange = 1;
+                
+            }
+            console.log(data.password)
+            console.log(data.passwordCon)
+            if(data.password !== '' && data.passwordCon !== '' && data.password === data.passwordCon){
                 console.log(data.password)
-            }if(data.userEmail !== accountInfo.userEmail){
+                didUserDetailsChange = 1;
+            }
+            if(data.password !== data.passwordCon){
+                alert("THOSE PASSWORDS DON'T MATCH")
+                didUserDetailsChange = -1;
+            }
+            if(data.userEmail !== accountInfo.userEmail){
                 if(admin){
                     await changeAdminEmail(data.userEmail);
                 }else{  
                     await changeUserEmail(data.userEmail);
                 }
+                didUserDetailsChange = 1;
             }
-            await alert("User Details set");
-            window.location.href="/all-users";
+            if(didUserDetailsChange === 1){
+                await alert("User Details set");
+                window.location.href="/all-users";
+            }else if (didUserDetailsChange === 0){
+                alert("NOTHING WAS CHANGED")
+            }
         }catch(error){
             alert("FAILED TO SET USER DETAILS")
         }
@@ -72,6 +94,10 @@ export default function EditUserDetails(){
             <div>Loading...</div>
         )
     }
+    const toggleShown = ()=>{
+        setIsShown((isShown)=>!isShown)
+    }
+
 
     return(
         <div>
@@ -99,12 +125,23 @@ export default function EditUserDetails(){
                 </label>
                 <label htmlFor="">
                    <div>
-                        Password:
-                        <input type="password" id="" {...register("password")}/>
+                        Set a new Password:
+                        <input type={isShown? 'text':'password'} id="" {...register("password")}/>
                    </div>
                 </label>
+                <div>
+                <label htmlFor="">
+                   <div>
+                        Confirm new Password:
+                        <input type={isShown? 'text':'password'} id="" {...register("passwordCon")}/>
+                   </div>
+                </label>
+                <div></div>
+                    See password?
+                    <input type="checkbox" checked={isShown} onChange={toggleShown} />
+                </div>
                 <button type="submit">Change userInfo</button>
-
+                
             </form>
         </div>
     )
