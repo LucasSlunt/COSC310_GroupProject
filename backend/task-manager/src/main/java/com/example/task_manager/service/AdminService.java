@@ -4,6 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.xml.catalog.GroupEntry;
+import javax.xml.catalog.GroupEntry;
+
 import org.springframework.stereotype.Service;
 
 import com.example.task_manager.DTO.AdminDTO;
@@ -11,6 +14,7 @@ import com.example.task_manager.DTO.TeamDTO;
 import com.example.task_manager.DTO.TeamMemberDTO;
 import com.example.task_manager.entity.*;
 import com.example.task_manager.repository.*;
+import com.example.task_manager.enums.RoleType;
 
 import jakarta.transaction.Transactional;
 
@@ -100,24 +104,52 @@ public class AdminService extends TeamMemberService {
 	}
 
 	// Promotes a TeamMember to Admin by removing them from the TeamMember table and adding them to the Admin table
-	public AdminDTO promoteToAdmin(int teamMemberId) {
-		TeamMember teamMember = teamMemberRepository.findById(teamMemberId)
-			.orElseThrow(() -> new RuntimeException("Team Member not found with ID: " + teamMemberId));
+	// public AdminDTO promoteToAdmin(int teamMemberId) {
+	// 	TeamMember teamMember = teamMemberRepository.findById(teamMemberId)
+	// 			.orElseThrow(() -> new RuntimeException("Team Member not found with ID: " + teamMemberId));
 
-		teamMemberRepository.delete(teamMember);
-		teamMemberRepository.flush(); // Ensures deletion is immediately reflected in the database
+	// 	teamMemberRepository.delete(teamMember);
+	// 	teamMemberRepository.flush(); // Ensures deletion is immediately reflected in the database
 
-		// Creates a new Admin using the TeamMember's existing details
-		Admin admin = new Admin();
-		admin.setUserName(teamMember.getUserName());
-		admin.setUserEmail(teamMember.getUserEmail());
-		admin.setAuthInfo(teamMember.getAuthInfo());
-		admin.setTeams(new HashSet<>(teamMember.getTeams()));
+	// 	// Creates a new Admin using the TeamMember's existing details
+	// 	Admin admin = new Admin();
+	// 	admin.setUserName(teamMember.getUserName());
+	// 	admin.setUserEmail(teamMember.getUserEmail());
+	// 	admin.setAuthInfo(teamMember.getAuthInfo());
+	// 	admin.setTeams(new HashSet<>(teamMember.getTeams()));
 
-		admin = adminRepository.save(admin);
+	// 	admin = adminRepository.save(admin);
 
-		return convertToDTO(admin);
-	}	
+	// 	return convertToDTO(admin);
+	// }
+	
+	//changes a role from team member to admin or admin to team member
+	public Object changeRole(int memberId, RoleType targetRole) {
+		if (targetRole == RoleType.TEAM_MEMBER) {
+			// promoting member to admin
+			Admin admin = adminRepository.findById(memberId)
+					.orElseThrow(() -> new RuntimeException("Admin not found with ID: " + memberId));
+
+			admin.setRole(RoleType.TEAM_MEMBER);
+
+			//save new admin to database
+			adminRepository.save(admin);
+
+			return convertToDTO(admin);
+		}
+		else if (targetRole == RoleType.ADMIN) {
+			//demoting member to team member
+			TeamMember teamMember = teamMemberRepository.findById(memberId)
+					.orElseThrow(() -> new RuntimeException("Team Member not found with ID: " + memberId));
+
+			teamMember.setRole(RoleType.ADMIN);
+
+			//save team member to database
+			teamMemberRepository.save(teamMember);
+
+			return convertToDTO(teamMember);
+		}
+	}
 
 	// Assigns a TeamMember to a Team by creating an IsMemberOf entry
 	public TeamMemberDTO assignToTeam(int teamMemberId, int teamId) {
