@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import com.example.task_manager.Test_setup_methods;
 import com.example.task_manager.entity.AuthInfo;
 import com.example.task_manager.entity.TeamMember;
 
@@ -17,15 +18,12 @@ import jakarta.transaction.Transactional;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
-public class AuthInfoEntityTest {
+public class AuthInfoEntityTest extends Test_setup_methods{
 
     @Autowired
     private TestEntityManager entityManager;
 
-    private TeamMember createUniqueTeamMember() {
-        return new TeamMember("User_" + System.nanoTime(), 
-            "user_" + System.nanoTime() + "@example.com", "password123");
-    }
+    
 
     /**
      * Tests if an AuthInfo entity can be persisted and retrieved correctly.

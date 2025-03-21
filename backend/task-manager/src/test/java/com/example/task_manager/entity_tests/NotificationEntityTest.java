@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import com.example.task_manager.Test_setup_methods;
 import com.example.task_manager.entity.Notification;
 import com.example.task_manager.entity.Task;
 import com.example.task_manager.entity.Team;
@@ -21,7 +22,7 @@ import jakarta.persistence.PersistenceException;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class NotificationEntityTest {
+public class NotificationEntityTest extends Test_setup_methods{
     
     @Autowired
     private EntityManager entMan;

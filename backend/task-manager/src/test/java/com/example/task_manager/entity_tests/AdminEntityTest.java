@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
+import com.example.task_manager.Test_setup_methods;
 import com.example.task_manager.entity.Admin;
 import com.example.task_manager.entity.TeamMember;
 
@@ -20,7 +21,7 @@ import jakarta.transaction.Transactional;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
-public class AdminEntityTest {
+public class AdminEntityTest extends Test_setup_methods{
 
     @Autowired
     private TestEntityManager entMan;
@@ -35,15 +36,6 @@ public class AdminEntityTest {
         entMan.getEntityManager().createQuery("DELETE FROM TeamMember").executeUpdate();
         entMan.getEntityManager().createQuery("DELETE FROM Admin").executeUpdate();
         entMan.flush();
-    }
-
-
-    private Admin createUniqueAdmin() {
-        return new Admin("Admin_" + System.nanoTime(), "admin_" + System.nanoTime() + "@example.com", "defaultpw");
-    }
-
-    private TeamMember createUniqueTeamMember() {
-        return new TeamMember("TeamUser_" + System.nanoTime(), "team_user_" + System.nanoTime() + "@example.com", "defaultpw");
     }
 
     /**

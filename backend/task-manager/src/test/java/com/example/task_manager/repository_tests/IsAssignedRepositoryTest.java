@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import com.example.task_manager.Test_setup_methods;
 import com.example.task_manager.entity.IsAssigned;
 import com.example.task_manager.entity.Task;
 import com.example.task_manager.entity.Team;
@@ -22,37 +23,13 @@ import com.example.task_manager.repository.TeamRepository;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class IsAssignedRepositoryTest {
-
-    @Autowired
-    private IsAssignedRepository isAssignedRepository;
-
-    @Autowired
-    private TaskRepository taskRepository;
-
-    @Autowired
-    private TeamMemberRepository teamMemberRepository;
-
-    @Autowired
-    private TeamRepository teamRepository;
-
-    private Team createUniqueTeam() {
-        return teamRepository.save(new Team("Team_" + System.nanoTime(), null));
-    }
-
-    private TeamMember createUniqueTeamMember() {
-        return teamMemberRepository.save(new TeamMember("User_" + System.nanoTime(), "user_" + System.nanoTime() + "@example.com", "defaultpw"));
-    }
-
-    private Task createUniqueTask(Team team) {
-        return taskRepository.save(new Task("Task_" + System.nanoTime(), "Task description", team, false, "Open", LocalDate.now()));
-    }
+public class IsAssignedRepositoryTest extends Test_setup_methods{
 
     @Test
     void testSaveAssignment() {
-        Team team = createUniqueTeam();
-        TeamMember teamMember = createUniqueTeamMember();
-        Task task = createUniqueTask(team);
+        Team team = createAndSaveUniqueTeam();
+        TeamMember teamMember = createAndSaveUniqueTeamMember();
+        Task task = createAndSaveUniqueTask(team);
 
         IsAssigned assignment = new IsAssigned(task, teamMember, team);
         assignment = isAssignedRepository.save(assignment);
@@ -64,9 +41,9 @@ public class IsAssignedRepositoryTest {
 
     @Test
     void testFindByTeamMemberAndTask() {
-        Team team = createUniqueTeam();
-        TeamMember teamMember = createUniqueTeamMember();
-        Task task = createUniqueTask(team);
+        Team team = createAndSaveUniqueTeam();
+        TeamMember teamMember = createAndSaveUniqueTeamMember();
+        Task task = createAndSaveUniqueTask(team);
 
         IsAssigned assignment = new IsAssigned(task, teamMember, team);
         isAssignedRepository.save(assignment);
@@ -78,9 +55,9 @@ public class IsAssignedRepositoryTest {
 
     @Test
     void testExistsByTeamMemberAndTask() {
-        Team team = createUniqueTeam();
-        TeamMember teamMember = createUniqueTeamMember();
-        Task task = createUniqueTask(team);
+        Team team = createAndSaveUniqueTeam();
+        TeamMember teamMember = createAndSaveUniqueTeamMember();
+        Task task = createAndSaveUniqueTask(team);
 
         IsAssigned assignment = new IsAssigned(task, teamMember, team);
         isAssignedRepository.save(assignment);
@@ -91,9 +68,9 @@ public class IsAssignedRepositoryTest {
 
     @Test
     void testFindAssignmentsByTeamMember() {
-        Team team = createUniqueTeam();
-        TeamMember teamMember = createUniqueTeamMember();
-        Task task = createUniqueTask(team);
+        Team team = createAndSaveUniqueTeam();
+        TeamMember teamMember = createAndSaveUniqueTeamMember();
+        Task task = createAndSaveUniqueTask(team);
 
         IsAssigned assignment = new IsAssigned(task, teamMember, team);
         isAssignedRepository.save(assignment);
@@ -106,9 +83,9 @@ public class IsAssignedRepositoryTest {
 
     @Test
     void testDeleteAssignment() {
-        Team team = createUniqueTeam();
-        TeamMember teamMember = createUniqueTeamMember();
-        Task task = createUniqueTask(team);
+        Team team = createAndSaveUniqueTeam();
+        TeamMember teamMember = createAndSaveUniqueTeamMember();
+        Task task = createAndSaveUniqueTask(team);
 
         IsAssigned assignment = new IsAssigned(task, teamMember, team);
         assignment = isAssignedRepository.save(assignment);
@@ -138,11 +115,11 @@ public class IsAssignedRepositoryTest {
 
     @Test
     void testFindAssignmentsByTask() {
-        Team team = createUniqueTeam();
-        Task task = createUniqueTask(team);
+        Team team = createAndSaveUniqueTeam();
+        Task task = createAndSaveUniqueTask(team);
 
-        TeamMember teamMember1 = createUniqueTeamMember();
-        TeamMember teamMember2 = createUniqueTeamMember();
+        TeamMember teamMember1 = createAndSaveUniqueTeamMember();
+        TeamMember teamMember2 = createAndSaveUniqueTeamMember();
 
         IsAssigned assignment1 = new IsAssigned(task, teamMember1, team);
         isAssignedRepository.save(assignment1);

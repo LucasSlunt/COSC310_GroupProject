@@ -8,24 +8,17 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import com.example.task_manager.Test_setup_methods;
 import com.example.task_manager.entity.IsMemberOf;
 import com.example.task_manager.entity.Team;
 import com.example.task_manager.entity.TeamMember;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class IsMemberOfEntityTest {
+public class IsMemberOfEntityTest extends Test_setup_methods{
 
     @Autowired
     private TestEntityManager entityManager;
-
-    private Team createUniqueTeam(TeamMember teamLead) {
-        return new Team("Team_" + System.nanoTime(), teamLead);
-    }
-
-    private TeamMember createUniqueTeamMember() {
-        return new TeamMember("Member_" + System.nanoTime(), "user_" + System.nanoTime() + "@example.com", "defaultpw");
-    }
 
     @Test
     void testIsMemberOfPersistence() {

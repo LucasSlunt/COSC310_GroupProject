@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import com.example.task_manager.Test_setup_methods;
 import com.example.task_manager.entity.Notification;
 import com.example.task_manager.entity.Task;
 import com.example.task_manager.entity.Team;
@@ -23,10 +24,11 @@ import com.example.task_manager.repository.TeamRepository;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class NotificationRepositoryTest {
+public class NotificationRepositoryTest extends Test_setup_methods {
 
     @Autowired
     private NotificationRepository notificationRepository;
+    
 
     @Autowired
     private TeamRepository teamRepository;
@@ -37,32 +39,13 @@ public class NotificationRepositoryTest {
     @Autowired
     private TaskRepository taskRepository;
 
-    // Helper methods to create unique entities for each test
-    private Team createUniqueTeam() {
-        Team team = new Team();
-        team.setTeamName("QA Team_" + System.nanoTime());
-        return teamRepository.save(team);
-    }
-
-    private TeamMember createUniqueTeamMember() {
-        TeamMember teamMember = new TeamMember("Alice_" + System.nanoTime(), "alice" + System.nanoTime() + "@example.com", "password123");
-        return teamMemberRepository.save(teamMember);
-    }
-
-    private Task createUniqueTask(Team team) {
-        Task task = new Task();
-        task.setTitle("Test Notifications " + System.nanoTime());
-        task.setStatus("Open");
-        task.setDateCreated(LocalDate.now());
-        task.setTeam(team);
-        return taskRepository.save(task);
-    }
+   
 
     @Test
     void testSaveNotification() {
-        Team team = createUniqueTeam();
-        TeamMember teamMember = createUniqueTeamMember();
-        Task task = createUniqueTask(team);
+        Team team = createAndSaveUniqueTeam();
+        TeamMember teamMember = createAndSaveUniqueTeamMember();
+        Task task = createAndSaveUniqueTask(team);
 
         Notification notification = new Notification(NotificationType.TASK_ASSIGNED, "You have been assigned a task.", task, teamMember);
         Notification savedNotification = notificationRepository.save(notification);
@@ -74,9 +57,9 @@ public class NotificationRepositoryTest {
 
     @Test
     void testPrePersistCreatedAtField() {
-        Team team = createUniqueTeam();
-        TeamMember teamMember = createUniqueTeamMember();
-        Task task = createUniqueTask(team);
+        Team team = createAndSaveUniqueTeam();
+        TeamMember teamMember = createAndSaveUniqueTeamMember();
+        Task task = createAndSaveUniqueTask(team);
 
         Notification notification = new Notification(NotificationType.TASK_STATUS_EDITED, "Task status updated", task, teamMember);
         notificationRepository.save(notification);
@@ -87,9 +70,9 @@ public class NotificationRepositoryTest {
 
     @Test
     void testNotificationAssociations() {
-        Team team = createUniqueTeam();
-        TeamMember teamMember = createUniqueTeamMember();
-        Task task = createUniqueTask(team);
+        Team team = createAndSaveUniqueTeam();
+        TeamMember teamMember = createAndSaveUniqueTeamMember();
+        Task task = createAndSaveUniqueTask(team);
 
         Notification notification = new Notification(NotificationType.TASK_DUE_DATE_EDITED, "Task due date changed", task, teamMember);
         Notification savedNotification = notificationRepository.save(notification);
@@ -103,9 +86,9 @@ public class NotificationRepositoryTest {
 
     @Test
     void testReadUnreadStatusToggle() {
-        Team team = createUniqueTeam();
-        TeamMember teamMember = createUniqueTeamMember();
-        Task task = createUniqueTask(team);
+        Team team = createAndSaveUniqueTeam();
+        TeamMember teamMember = createAndSaveUniqueTeamMember();
+        Task task = createAndSaveUniqueTask(team);
 
         Notification notification = new Notification(NotificationType.TASK_ASSIGNED, "Task assigned", task, teamMember);
         notification.setIsRead(false);
@@ -123,9 +106,9 @@ public class NotificationRepositoryTest {
 
     @Test
     void testDeleteNotification() {
-        Team team = createUniqueTeam();
-        TeamMember teamMember = createUniqueTeamMember();
-        Task task = createUniqueTask(team);
+        Team team = createAndSaveUniqueTeam();
+        TeamMember teamMember = createAndSaveUniqueTeamMember();
+        Task task = createAndSaveUniqueTask(team);
 
         Notification notification = new Notification(NotificationType.TASK_UNASSIGNED, "Task unassigned", task, teamMember);
         notificationRepository.save(notification);

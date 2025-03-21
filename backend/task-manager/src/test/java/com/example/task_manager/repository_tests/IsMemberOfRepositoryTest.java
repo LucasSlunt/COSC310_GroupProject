@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import com.example.task_manager.Test_setup_methods;
 import com.example.task_manager.entity.IsMemberOf;
 import com.example.task_manager.entity.Team;
 import com.example.task_manager.entity.TeamMember;
@@ -23,13 +24,10 @@ import com.example.task_manager.repository.AdminRepository;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class IsMemberOfRepositoryTest {
+public class IsMemberOfRepositoryTest extends Test_setup_methods{
 
-    @Autowired
-    private TestEntityManager entityManager;
 
-    @Autowired
-    private IsMemberOfRepository isMemberOfRepository;
+
 
     @Autowired
     private TeamRepository teamRepository;
@@ -40,48 +38,16 @@ public class IsMemberOfRepositoryTest {
     @Autowired
     private AuthInfoRepository authInfoRepository;
 
-    /**
-     * Creates and persists a unique Team.
-     */
-    private Team createUniqueTeam() {
-        Team team = new Team();
-        team.setTeamName("Test Team " + System.nanoTime());
-        entityManager.persist(team);
-        entityManager.flush();
-        return team;
-    }
-
-    /**
-     * Creates and persists a unique TeamMember.
-     */
-    private TeamMember createUniqueTeamMember() {
-        TeamMember teamMember = new TeamMember("TestUser" + System.nanoTime(),
-                "test" + System.nanoTime() + "@example.com", "defaultpw");
-        entityManager.persist(teamMember);
-        entityManager.flush();
-        return teamMember;
-    }
-
-    /**
-     * Creates and persists a unique IsMemberOf relationship.
-     */
-    private IsMemberOf createUniqueMembership(Team team, TeamMember teamMember) {
-        IsMemberOf isMemberOf = new IsMemberOf();
-        isMemberOf.setTeam(team);
-        isMemberOf.setTeamMember(teamMember);
-        entityManager.persist(isMemberOf);
-        entityManager.flush();
-        return isMemberOf;
-    }
+    
 
     /**
      * Tests the findMembersByTeamId() method to ensure it retrieves the correct members.
      */
     @Test
     void testFindMembersByTeamId() {
-        Team team = createUniqueTeam();
-        TeamMember teamMember = createUniqueTeamMember();
-        createUniqueMembership(team, teamMember);
+        Team team = createAndPersistUniqueTeam();
+        TeamMember teamMember = createAndPersistUniqueTeamMember();
+        createAndPersistUniqueMembership(team, teamMember);
 
         List<IsMemberOf> members = isMemberOfRepository.findMembersByTeamId(team.getTeamId());
 
@@ -105,9 +71,9 @@ public class IsMemberOfRepositoryTest {
      */
     @Test
     void testExistsByTeamMemberAndTeam() {
-        Team team = createUniqueTeam();
-        TeamMember teamMember = createUniqueTeamMember();
-        createUniqueMembership(team, teamMember);
+        Team team = createAndPersistUniqueTeam();
+        TeamMember teamMember = createAndPersistUniqueTeamMember();
+        createAndPersistUniqueMembership(team, teamMember);
 
         boolean exists = isMemberOfRepository.existsByTeamMemberAccountIdAndTeamTeamId(
                 teamMember.getAccountId(), team.getTeamId());
@@ -128,9 +94,9 @@ public class IsMemberOfRepositoryTest {
      */
     @Test
     void testFindByTeamMemberAndTeam() {
-        Team team = createUniqueTeam();
-        TeamMember teamMember = createUniqueTeamMember();
-        IsMemberOf isMemberOf = createUniqueMembership(team, teamMember);
+        Team team = createAndPersistUniqueTeam();
+        TeamMember teamMember = createAndPersistUniqueTeamMember();
+        IsMemberOf isMemberOf = createAndPersistUniqueMembership(team, teamMember);
 
         Optional<IsMemberOf> foundMembership = isMemberOfRepository.findByTeamMemberAndTeam(teamMember, team);
         assertTrue(foundMembership.isPresent());
@@ -142,9 +108,9 @@ public class IsMemberOfRepositoryTest {
      */
     @Test
     void testDeleteMembership() {
-        Team team = createUniqueTeam();
-        TeamMember teamMember = createUniqueTeamMember();
-        IsMemberOf isMemberOf = createUniqueMembership(team, teamMember);
+        Team team = createAndPersistUniqueTeam();
+        TeamMember teamMember = createAndPersistUniqueTeamMember();
+        IsMemberOf isMemberOf = createAndPersistUniqueMembership(team, teamMember);
 
         isMemberOfRepository.delete(isMemberOf);
         entityManager.flush();
