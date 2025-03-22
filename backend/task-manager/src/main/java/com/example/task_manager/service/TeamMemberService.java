@@ -214,18 +214,39 @@ public class TeamMemberService {
 	 * @param newPassword  The new password to set (not yet implemented).
 	 */
 	public void changePassword(int teamMemberId, String oldPassword, String newPassword) {
-		if (newPassword == null || newPassword.isEmpty()){
+		if (newPassword == null || newPassword.isEmpty()) {
 			throw new RuntimeException("Cannot change password to null or empty string");
 		}
 		TeamMember teamMember = teamMemberRepository.findById(teamMemberId)
-			.orElseThrow(() -> new RuntimeException("Team Member not found with ID: " + teamMemberId));
-			
-			boolean isOldPasswordVerified = authInfoService.approveLogin(teamMember.getAccountId(),oldPassword);
-			if (isOldPasswordVerified){
-				String salt = teamMember.getAuthInfo().getSalt();
-				String newHashedPassword = AuthInfoService.hashPassword(newPassword, salt);
-				teamMember.getAuthInfo().setHashedPassword(newHashedPassword);
-			}
+				.orElseThrow(() -> new RuntimeException("Team Member not found with ID: " + teamMemberId));
+
+		boolean isOldPasswordVerified = authInfoService.approveLogin(teamMember.getAccountId(), oldPassword);
+		if (isOldPasswordVerified) {
+			String salt = teamMember.getAuthInfo().getSalt();
+			String newHashedPassword = AuthInfoService.hashPassword(newPassword, salt);
+			teamMember.getAuthInfo().setHashedPassword(newHashedPassword);
+		}
+	}
+	
+	public void resetPassword(int teamMemberId, String newPassword) {
+		//check if password is valid
+		if (newPassword == null || newPassword.isEmpty()) {
+			throw new RuntimeException("Cannot change password to null or empty string");
+		}
+
+		//ensure the team member exists
+		TeamMember teamMember = teamMemberRepository.findById(teamMemberId)
+				.orElseThrow(() -> new RuntimeException("Team Member not found with ID: " + teamMemberId));
+
+		//create new salt and new password
+		String newSalt = authInfoService.generateSalt();
+		String newHashedPassword = authInfoService.hashPassword(newPassword, newSalt);
+
+		//set the new salt and hashed password
+		teamMember.getAuthInfo().setSalt(newSalt);
+		teamMember.getAuthInfo().setHashedPassword(newHashedPassword);
+
+		teamMemberRepository.save(teamMember);
 	}
 
 	public TeamMemberDTO getTeamMember(int accountId) {

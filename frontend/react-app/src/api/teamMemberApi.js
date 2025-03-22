@@ -108,6 +108,28 @@ export const changePassword = async (teamMemberId, oldPassword, newPassword) => 
     }
 };
 
+//reset password
+export const resetPassword = async (teamMemberId, newPassword) => {
+    try {
+        const response = await fetch(`${BASE_URL}/team-members/${teamMemberId}/reset-password`, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ newPassword })
+        });
+
+        if (!response.ok) {
+            console.error(`Failed to reset password: ${response.status} ${response.statusText}`)
+            return null;
+        }
+
+        return await response.json();
+    }
+    catch (error) {
+        console.error("Error resetting password: ", error);
+        throw error;
+    }
+};
+
 //getting all teams for a specific team member
 export const getTeamsForMember = async (accountId) => {
     try {

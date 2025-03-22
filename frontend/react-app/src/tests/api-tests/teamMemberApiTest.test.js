@@ -1,4 +1,4 @@
-import { createTask, deleteTask, editTask, assignMemberToTask, changePassword, getTeamsForMember, getAssignedTasks } from '../../api/teamMemberApi';
+import { createTask, deleteTask, editTask, assignMemberToTask, changePassword, resetPassword, getTeamsForMember, getAssignedTasks } from '../../api/teamMemberApi';
 
 const BASE_URL = "http://localhost:8080/api/tasks";
 
@@ -118,6 +118,23 @@ describe('Team Member API', () => {
 
         expect(result).toEqual(mockResponse);
     });
+
+    //test: resetting a password
+    test('resetPassword should return success on valid password reset', async () => {
+        const mockResponse = { success: true };
+
+        fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
+
+        const result = await resetPassword(1, "DefLeppard");
+
+        expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/team-members/1/reset-password`, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ newPassword: "DefLeppard" })
+        });
+
+        expect(result).toEqual(mockResponse);
+    })
 
     //test: getting all teams for a team member
     test('getTeamsForMember should return json body on success', async () => {
