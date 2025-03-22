@@ -22,6 +22,7 @@ import com.example.task_manager.entity.Task;
 import com.example.task_manager.entity.Team;
 import com.example.task_manager.entity.TeamMember;
 import com.example.task_manager.repository.*;
+import com.example.task_manager.enums.TaskPriority;
 
 import com.example.task_manager.service.AdminService;
 import com.example.task_manager.service.TeamService;
@@ -126,7 +127,7 @@ public class AdminServiceTest {
     @Test
     void testLockTask() {
         Team team = teamRepository.save(new Team("LockTeam-" + System.nanoTime(), null));
-        TaskRequestDTO taskRequest = new TaskRequestDTO("TaskToLock", "Lock Task Desc", false, "Open", LocalDate.now(), null, team.getTeamId());
+        TaskRequestDTO taskRequest = new TaskRequestDTO("TaskToLock", "Lock Task Desc", false, "Open", LocalDate.now(), null, team.getTeamId(), TaskPriority.MEDIUM);
         TaskDTO task = adminService.createTask(taskRequest);
 
         adminService.lockTask(task.getTaskId());
@@ -137,7 +138,7 @@ public class AdminServiceTest {
     @Test
     void testUnlockTask() {
         Team team = teamRepository.save(new Team("UnlockTeam-" + System.nanoTime(), null));
-        TaskRequestDTO taskRequest = new TaskRequestDTO("TaskToUnlock", "Unlock Task Desc", true, "Open", LocalDate.now(), null, team.getTeamId());
+        TaskRequestDTO taskRequest = new TaskRequestDTO("TaskToUnlock", "Unlock Task Desc", true, "Open", LocalDate.now(), null, team.getTeamId(), TaskPriority.MEDIUM);
         TaskDTO task = adminService.createTask(taskRequest);
 
         adminService.unlockTask(task.getTaskId());

@@ -3,6 +3,7 @@ package com.example.task_manager.entity;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import com.example.task_manager.enums.TaskPriority;
 
 import jakarta.persistence.*;
 
@@ -23,6 +24,10 @@ public class Task {
     @Column(nullable = false)
     private String status;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TaskPriority priority;
+
     @Column(nullable = false)
     private LocalDate dateCreated;
 
@@ -38,13 +43,14 @@ public class Task {
 
     public Task() {}
 
-    public Task(String title, String description, Team team, boolean isLocked, String status, LocalDate dateCreated) {
+    public Task(String title, String description, Team team, boolean isLocked, String status, LocalDate dateCreated, TaskPriority priority) {
         this.title = title;
         this.description = description;
         this.team = team;
         this.isLocked = isLocked;
         this.status = status;
         this.dateCreated = dateCreated;
+        this.priority = priority;
     }
 
 
@@ -152,5 +158,13 @@ public class Task {
      */
     public void setAssignedMembers(Set<IsAssigned> assignedMembers) {
         this.assignedMembers = (assignedMembers != null) ? assignedMembers : new HashSet<>();
-    }    
+    }
+    
+    public TaskPriority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(TaskPriority priority) {
+        this.priority = priority;
+    }
 }

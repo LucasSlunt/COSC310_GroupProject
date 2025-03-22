@@ -39,8 +39,16 @@ function EditTaskForm({task, team}){
                                     ))}
                                 </div>
                             </label>
+                            <label>
+                                Priority
+                                <select name="" id="" defaultValue={task.priority}{...register("priority")}>
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </label>
                             <label className='majorLabel'>
-                            Discription
+                            Description
                             
                             <div>
                                 <input type="text" name="input-discription" id="discription" className='input' defaultValue={task.discription}  {...register("discription", { required: false })}/>

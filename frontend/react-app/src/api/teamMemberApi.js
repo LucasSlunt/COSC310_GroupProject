@@ -1,13 +1,13 @@
 const BASE_URL = "http://localhost:8080/api/tasks";
 
 //Create a task
-export const createTask = async (title, description, isLocked, status, dueDate, teamId) => {
+export const createTask = async (title, description, isLocked, status, dueDate, teamId, priority) => {
     try {
-        console.log("Sending this: ", JSON.stringify({title, description, isLocked, status, dueDate, teamId}))
+        console.log("Sending this: ", JSON.stringify({title, description, isLocked, status, dueDate, teamId, priority}))
         const response = await fetch(`${BASE_URL}`, {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({title, description, isLocked, status, dueDate, teamId})
+            body: JSON.stringify({title, description, isLocked, status, dueDate, teamId, priority})
         });
 
         if (!response.ok) {
@@ -44,12 +44,12 @@ export const deleteTask = async (taskId) => {
 };
 
 //Edit task
-export const editTask = async (taskId, title, description, isLocked, status, dueDate) => {
+export const editTask = async (taskId, title, description, isLocked, status, dueDate, priority) => {
     try {
         const response = await fetch(`${BASE_URL}/${taskId}`, {
             method: 'PUT',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({title, description, isLocked, status, dueDate})
+            body: JSON.stringify({title, description, isLocked, status, dueDate, priority})
         });
 
         if (!response.ok) {

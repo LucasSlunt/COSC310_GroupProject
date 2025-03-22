@@ -21,7 +21,7 @@ describe('Team Member API', () => {
 
         fetch.mockResponseOnce(JSON.stringify(mockTask), {status: 201});
 
-        const result = await createTask("New Task", "Task description", false, "To-Do", "4-14-2025",2);
+        const result = await createTask("New Task", "Task description", false, "To-Do", "4-14-2025", 2, "LOW");
 
         expect(fetch).toHaveBeenCalledWith(`${BASE_URL}`, {
             method: 'POST',
@@ -32,7 +32,8 @@ describe('Team Member API', () => {
                 isLocked: false,
                 status: "To-Do",
                 dueDate: "4-14-2025",
-                teamId: 2
+                teamId: 2,
+                priority: "LOW"
             })
         });
 
@@ -60,12 +61,13 @@ describe('Team Member API', () => {
             description: "Updated description",
             isLocked: true,
             status: "In progress",
-            dueDate: "2025-03-01"
+            dueDate: "2025-03-01",
+            priority: "HIGH"
         };
 
         fetch.mockResponseOnce(JSON.stringify(updatedTask), { status: 200 });
 
-        const result = await editTask(1, "Updated Task", "Updated description", true, "In progress", "2025-03-01");
+        const result = await editTask(1, "Updated Task", "Updated description", true, "In progress", "2025-03-01", "HIGH");
 
         expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/1`, {
             method: 'PUT',
@@ -75,7 +77,8 @@ describe('Team Member API', () => {
                 description: "Updated description",
                 isLocked: true,
                 status: "In progress",
-                dueDate: "2025-03-01"
+                dueDate: "2025-03-01",
+                priority: "HIGH"
             })
         });
 

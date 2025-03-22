@@ -33,8 +33,9 @@ function CreateTaskForm(){
                 false,
                 "notStarted",
                 data.dueDate,
-                userTeams[0].teamId
-    
+                userTeams[0].teamId,
+                data.priority
+
             ).then((response)=>{
                 if(Array.isArray(data.assignees)){
                     data.assignees.map((assignee)=>{
@@ -108,6 +109,19 @@ function CreateTaskForm(){
                 <div>
                     <input type="text" name="input-description" id="description" className='input'{...register("description", { required: false })}/>
                 </div>
+                <div>
+                    <input type="text" name="input-description" id="description" {...register("description", { required: false })}/>
+                </div>
+                </label>
+                <label>
+                    Priority
+                    <div>
+                        <select name="" id="" {...register("priority")}>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
                 </label>
                 <label>
                     Due Date

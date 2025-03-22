@@ -2,6 +2,7 @@ package com.example.task_manager.DTO;
 
 import java.time.LocalDate;
 import java.util.List;
+import com.example.task_manager.enums.TaskPriority;
 
 public class TaskDTO {
     private int taskId;
@@ -12,11 +13,12 @@ public class TaskDTO {
     private LocalDate dateCreated;
     private LocalDate dueDate;
     private int teamId;
+    private TaskPriority priority;
     private List<TeamMemberDTO> assignedMembers;
 
     public TaskDTO() {}
 
-    public TaskDTO(int taskId, String title, String description, boolean isLocked, String status, LocalDate dateCreated, LocalDate dueDate, int teamId, List<TeamMemberDTO> assignedMembers) {
+    public TaskDTO(int taskId, String title, String description, boolean isLocked, String status, LocalDate dateCreated, LocalDate dueDate, int teamId, List<TeamMemberDTO> assignedMembers, TaskPriority priority) {
         this.taskId = taskId;
         this.title = title;
         this.description = description;
@@ -26,6 +28,7 @@ public class TaskDTO {
         this.dueDate = dueDate;
         this.teamId = teamId;
         this.assignedMembers = assignedMembers;
+        this.priority = priority;
     }
 
     //getters and setters
@@ -99,5 +102,13 @@ public class TaskDTO {
 
     public void setDateCreated(LocalDate dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public TaskPriority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(TaskPriority priority) {
+        this.priority = priority;
     }
 }

@@ -15,6 +15,7 @@ import com.example.task_manager.entity.IsMemberOf;
 import com.example.task_manager.entity.Task;
 import com.example.task_manager.entity.Team;
 import com.example.task_manager.entity.TeamMember;
+import com.example.task_manager.enums.TaskPriority;
 
 import jakarta.persistence.PersistenceException;
 
@@ -34,7 +35,7 @@ public class TeamMemberEntityTest {
     }
 
     private Task createUniqueTask(Team team) {
-        return new Task("Task_" + System.nanoTime(), "Description", team, false, "Open", LocalDate.now());
+        return new Task("Task_" + System.nanoTime(), "Description", team, false, "Open", LocalDate.now(), TaskPriority.LOW);
     }
 
     @Test
@@ -141,7 +142,7 @@ public class TeamMemberEntityTest {
         entityManager.persist(team);
         entityManager.flush();
 
-        Task task = new Task("Task_" + System.nanoTime(), "Description", team, false, "Open", LocalDate.now());
+        Task task = new Task("Task_" + System.nanoTime(), "Description", team, false, "Open", LocalDate.now(), TaskPriority.LOW);
         entityManager.persist(task);
         entityManager.flush();
 

@@ -14,6 +14,7 @@ import com.example.task_manager.entity.IsAssigned;
 import com.example.task_manager.entity.Task;
 import com.example.task_manager.entity.Team;
 import com.example.task_manager.entity.TeamMember;
+import com.example.task_manager.enums.TaskPriority;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -31,7 +32,7 @@ public class TaskEntityTest {
     }
 
     private Task createUniqueTask(Team team) {
-        return new Task("Task_" + System.nanoTime(), "Task description", team, false, "Open", LocalDate.now());
+        return new Task("Task_" + System.nanoTime(), "Task description", team, false, "Open", LocalDate.now(), TaskPriority.LOW);
     }
 
     @Test

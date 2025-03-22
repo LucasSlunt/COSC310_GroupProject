@@ -16,6 +16,7 @@ import com.example.task_manager.entity.Task;
 import com.example.task_manager.entity.Team;
 import com.example.task_manager.entity.TeamMember;
 import com.example.task_manager.enums.NotificationType;
+import com.example.task_manager.enums.TaskPriority;
 import com.example.task_manager.repository.NotificationRepository;
 import com.example.task_manager.repository.TaskRepository;
 import com.example.task_manager.repository.TeamMemberRepository;
@@ -55,6 +56,7 @@ public class NotificationRepositoryTest {
         task.setStatus("Open");
         task.setDateCreated(LocalDate.now());
         task.setTeam(team);
+        task.setPriority(TaskPriority.MEDIUM);
         return taskRepository.save(task);
     }
 

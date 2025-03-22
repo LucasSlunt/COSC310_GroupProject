@@ -15,6 +15,7 @@ import com.example.task_manager.entity.Task;
 import com.example.task_manager.entity.Team;
 import com.example.task_manager.entity.TeamMember;
 import com.example.task_manager.enums.NotificationType;
+import com.example.task_manager.enums.TaskPriority;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceException;
@@ -41,7 +42,7 @@ public class NotificationEntityTest {
     }
 
     private Task persistTask(Team team) {
-        Task task = new Task("Task_" + System.nanoTime(), "Task description", team, false, "Open", LocalDate.now());
+        Task task = new Task("Task_" + System.nanoTime(), "Task description", team, false, "Open", LocalDate.now(), TaskPriority.HIGH);
         entMan.persist(task);
         entMan.flush();
         return entMan.find(Task.class, task.getTaskId());

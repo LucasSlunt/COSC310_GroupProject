@@ -21,6 +21,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import com.example.task_manager.enums.TaskPriority;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -48,7 +49,7 @@ public class TeamMemberControllerTest {
     void testCreateTask() throws Exception {
         int uniqueId = (int) System.nanoTime();
         int teamId = uniqueId + 1;
-        TaskDTO mockTask = new TaskDTO(uniqueId, "Task Title " + uniqueId, "Description", false, "Open", LocalDate.now(), null, teamId, null);
+        TaskDTO mockTask = new TaskDTO(uniqueId, "Task Title " + uniqueId, "Description", false, "Open", LocalDate.now(), null, teamId, null,  TaskPriority.LOW);
 
         TaskRequestDTO requestDTO = new TaskRequestDTO(
                 "Task Title " + uniqueId,
@@ -57,7 +58,8 @@ public class TeamMemberControllerTest {
                 "Open",
                 LocalDate.of(2025, 3, 11),
                 Arrays.asList(1, 2, 3),
-                teamId
+                teamId,
+                TaskPriority.LOW
         );
 
         when(teamMemberService.createTask(any(TaskRequestDTO.class))).thenReturn(mockTask);
@@ -70,7 +72,8 @@ public class TeamMemberControllerTest {
                 .andExpect(jsonPath("$.description").value("Description"))
                 .andExpect(jsonPath("$.isLocked").value(false))
                 .andExpect(jsonPath("$.status").value("Open"))
-                .andExpect(jsonPath("$.teamId").value(teamId));
+                .andExpect(jsonPath("$.teamId").value(teamId))
+                .andExpect(jsonPath("$.priority").value("LOW"));
     }
 
     /**
@@ -102,7 +105,8 @@ public class TeamMemberControllerTest {
                 LocalDate.now().plusDays(3),
                 null,
                 teamId,
-                null
+                null,
+                TaskPriority.HIGH
         );
 
         when(teamMemberService.editTask(eq(uniqueId), any(TaskDTO.class))).thenReturn(requestDTO);
@@ -115,7 +119,8 @@ public class TeamMemberControllerTest {
                 .andExpect(jsonPath("$.description").value("Updated Description"))
                 .andExpect(jsonPath("$.isLocked").value(false))
                 .andExpect(jsonPath("$.status").value("In Progress"))
-                .andExpect(jsonPath("$.teamId").value(teamId));
+                .andExpect(jsonPath("$.teamId").value(teamId))
+                .andExpect(jsonPath("$.priority").value("HIGH"));
     }
 
     /**
@@ -161,13 +166,15 @@ public class TeamMemberControllerTest {
     @Test
     void testGetAssignedTasks() throws Exception {
         List<TaskDTO> mockTasks = Arrays.asList(
-                new TaskDTO(1, "Task Title 1", "Task 1 description", false, "Open", LocalDate.now(), null, 1, null),
-                new TaskDTO(2, "Task Title 2", "Task 2 description", true, "Closed", LocalDate.now(), null, 1, null));
+                new TaskDTO(1, "Task Title 1", "Task 1 description", false, "Open", LocalDate.now(), null, 1, null, TaskPriority.MEDIUM),
+                new TaskDTO(2, "Task Title 2", "Task 2 description", true, "Closed", LocalDate.now(), null, 1, null, TaskPriority.MEDIUM));
 
         when(teamMemberService.getAssignedTasks(1)).thenReturn(mockTasks);
 
         MvcResult result = mockMvc.perform(get("/api/tasks/1/tasks"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].priority").value("MEDIUM"))
+                .andExpect(jsonPath("$[1].priority").value("MEDIUM"))
                 .andReturn();
 
     }

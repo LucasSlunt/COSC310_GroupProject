@@ -427,7 +427,8 @@ All API requests should be made to the following base URL (Spring Boot's default
         "isLocked": false,
         "status": "To-Do",
         "dueDate": "2025-03-01",
-        "teamId": 3
+        "teamId": 3,
+        "priority": "HIGH"
     }
     ```
     - **Response Body:**
@@ -439,7 +440,8 @@ All API requests should be made to the following base URL (Spring Boot's default
         "isLocked": false,
         "status": "To-Do",
         "dueDate": "2025-03-01",
-        "teamId": 3
+        "teamId": 3,
+        "priority": "HIGH"
     }
     ```
     - **Description:** Creates a task in the database.
@@ -455,7 +457,8 @@ All API requests should be made to the following base URL (Spring Boot's default
         "description": "Updated Description",
         "isLocked": false,
         "status": "In Progress",
-        "dueDate": "2025-04-01"
+        "dueDate": "2025-04-01",
+        "priority": "HIGH"
     }
     ```
     - **Response Body:**
@@ -467,7 +470,8 @@ All API requests should be made to the following base URL (Spring Boot's default
         "isLocked": false,
         "status": "In Progress",
         "dueDate": "2025-04-01",
-        "teamId": 3
+        "teamId": 3,
+        "priority": "HIGH"
     }
     ```
     - **Description:** Updates the details of a task.
@@ -523,6 +527,7 @@ All API requests should be made to the following base URL (Spring Boot's default
             "dateCreated": "2024-03-04",
             "dueDate": "2024-04-01",
             "teamId": 1,
+            "priority": "HIGH",
             "assignedMembers": 
             [
                 {
@@ -545,6 +550,7 @@ All API requests should be made to the following base URL (Spring Boot's default
             "status": "Pending",
             "dueDate": null,
             "teamId": 2,
+            "priority": "MEDIUM",
             "assignedMembers": []
         }
     ]
@@ -670,6 +676,7 @@ All API requests should be made to the following base URL (Spring Boot's default
     - `isLocked` (boolean, optional): Whether the task is locked. Defaults to `null` if not provided.
     - `status` (string, optional): The task status (e.g., "To-Do", "In Progress", "Done"). Defaults to `null` if not provided.
     - `dueDate` (string, optional): The due date of the task in `YYYY-MM-DD` format.
+    - `priority` (string, required): The priority of tha task. Must be one of **LOW, MEDIUM, or HIGH**.
 
 ---
 
