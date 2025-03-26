@@ -86,6 +86,28 @@ export const assignMemberToTask = async (taskId, teamMemberId) => {
     }
 };
 
+//Assign many members to a task
+export const massAssignMemberToTask = async(taskId, teamMemberIds) => {
+    try {
+        const response = await fetch(`${BASE_URL}/${taskId}/mass-assign`, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(teamMemberIds)
+        });
+
+        if (!response.ok) {
+            console.error(`Failed to assign members to task: ${response.status} ${response.statusText}`);
+            return null;
+        }
+
+        return await response.json();
+    }
+    catch (error) {
+        console.error("Error assigning member to task: ", error);
+        throw error;
+    }
+};
+
 //Change password
 export const changePassword = async (teamMemberId, oldPassword, newPassword) => {
     try {

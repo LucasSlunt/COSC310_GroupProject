@@ -146,6 +146,28 @@ public class TeamMemberControllerTest {
                 .andExpect(jsonPath("$.taskId").value(taskId));
     }
 
+    /*
+     * Test mass assign members to task
+     */
+    @Test
+    void testMassAssignToTask() throws Exception {
+        int uniqueId = 1;
+        int taskId = 2;
+
+        List<Integer> teamMemberIds = List.of(4, 5, 6);
+
+        List<IsAssignedDTO> mockAssignments = List.of(
+            new IsAssignedDTO(uniqueId, taskId, 4, uniqueId),
+            new IsAssignedDTO(uniqueId, taskId, 5, uniqueId),
+            new IsAssignedDTO(uniqueId, taskId, 6, uniqueId)
+        );
+        when(teamMemberService.massAssignToTask(taskId, teamMemberIds)).thenReturn(mockAssignments);
+
+        mockMvc.perform(post("/api/tasks/2/mass-assign"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.taskId").value(taskId));
+    }
+
     /**
      * Placeholder: Change Password
      */

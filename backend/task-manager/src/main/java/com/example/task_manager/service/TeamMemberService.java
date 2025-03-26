@@ -197,24 +197,50 @@ public class TeamMemberService {
 	 * @param taskId       The ID of the task.
 	 * @param teamMemberId The ID of the team member to be assigned.
 	 */
-	public IsAssignedDTO assignToTask(int taskId, int teamMemberId) {
-		Task task = taskRepository.findById(taskId)
-			.orElseThrow(() -> new RuntimeException("Task not found with ID: " + taskId));
+    public IsAssignedDTO assignToTask(int taskId, int teamMemberId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found with ID: " + taskId));
 
-		TeamMember teamMember = teamMemberRepository.findById(teamMemberId)
-			.orElseThrow(() -> new RuntimeException("Team Member not found with ID: " + teamMemberId));
+        TeamMember teamMember = teamMemberRepository.findById(teamMemberId)
+                .orElseThrow(() -> new RuntimeException("Team Member not found with ID: " + teamMemberId));
 
-		// Ensure that the member is not already assigned to this task
-		boolean alreadyAssigned = isAssignedRepository.existsByTeamMember_AccountIdAndTask_TaskId(teamMemberId, taskId);
-		if (alreadyAssigned) {
-			throw new RuntimeException("Team Member is already assigned to this task.");
-		}
+        // Ensure that the member is not already assigned to this task
+        boolean alreadyAssigned = isAssignedRepository.existsByTeamMember_AccountIdAndTask_TaskId(teamMemberId, taskId);
+        if (alreadyAssigned) {
+            throw new RuntimeException("Team Member is already assigned to this task.");
+        }
 
-		IsAssigned isAssigned = new IsAssigned(task, teamMember, task.getTeam());
-		isAssigned = isAssignedRepository.save(isAssigned);
+        IsAssigned isAssigned = new IsAssigned(task, teamMember, task.getTeam());
+        isAssigned = isAssignedRepository.save(isAssigned);
 
-		return convertToDTO(isAssigned);	
-	}
+        return convertToDTO(isAssigned);
+    }
+    
+    public List<IsAssignedDTO> massAssignToTask(int taskId, List<Integer> teamMemberIds) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found with ID: " + taskId));
+
+        List<IsAssigned> newAssignments = new ArrayList<>();
+
+        for (Integer teamMemberId : teamMemberIds) {
+            TeamMember teamMember = teamMemberRepository.findById(teamMemberId)
+                    .orElseThrow(() -> new RuntimeException("Team Member not found with ID: " + teamMemberId));
+
+            boolean alreadyAssigned = isAssignedRepository.existsByTeamMember_AccountIdAndTask_TaskId(teamMemberId,
+                    taskId);
+
+            if (!alreadyAssigned) {
+                IsAssigned isAssigned = new IsAssigned(task, teamMember, task.getTeam());
+                newAssignments.add(isAssigned);
+            }
+        }
+        
+        List<IsAssigned> savedAssignments = isAssignedRepository.saveAll(newAssignments);
+
+        return savedAssignments.stream()    
+            .map(this::convertToDTO)
+            .collect(Collectors.toList());
+    }
 
 	/**
 	 * Changes the password for a TeamMember.

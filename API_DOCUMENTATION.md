@@ -504,6 +504,44 @@ All API requests should be made to the following base URL (Spring Boot's default
   ```
   - **Description:** Returns a list of every team member in a team. Each list item contains the team member's ID, name, and email.
 
+- **Get Team Tasks:** `GET /{teamId}/tasks`
+    - **Response Body:**
+    ```json
+    [
+        {
+            "taskId": 1,
+            "title": "Task 1 title",
+            "description": "Task 1 description.",
+            "isLocked": false,
+            "status": "Open",
+            "dateCreated": "2025-03-24",
+            "dueDate": null,
+            "teamId": 2,
+            "assignedMembers": 
+            [
+                {
+                    "accountId": 3,
+                    "userName": "Team Member name",
+                    "userEmail": "team_member@example.com",
+                    "role": "TEAM_MEMBER"
+                }
+            ]
+        },
+        {
+            "taskId": 4,
+            "title": "Task 2 title",
+            "description": "Task 2 description.",
+            "isLocked": false,
+            "status": "To-Do",
+            "dateCreated": "2025-03-24",
+            "dueDate": "2025-04-01",
+            "teamId": 2,
+            "assignedMembers": []
+        }
+    ]
+    ```
+    - **Description:** Returns a list of tasks connected to the team through the team members.
+
 ---
 
 ## **TeamMemberController**
@@ -572,9 +610,7 @@ All API requests should be made to the following base URL (Spring Boot's default
     - **Description:** Updates the details of a task.
 
 - **Assign Member to a Task:** `POST /{taskId}/assign/{teamMemberId}`
-
   - **Response Body:**
-
   ```json
   {
     "isAssignedId": 1,
@@ -583,8 +619,37 @@ All API requests should be made to the following base URL (Spring Boot's default
     "teamId": 3
   }
   ```
-
   - **Description:** Assigns a member (admin or team member) to a task.
+
+- **Mass Assign Members to a Task:** `POST /{taskId}/mass-assign`
+    - **Request Body:**
+    ```json
+    [1, 2, 3, 4]
+    ```
+    - **Response Body:**
+    ```json
+    [
+        {
+            "isAssignedId": 1,
+            "taskId": 5,
+            "teamMemberId": 7,
+            "teamId": 2
+        },
+        {
+            "isAssignedId": 2,
+            "taskId": 5,
+            "teamMemberId": 8,
+            "teamId": 2
+        },
+        {
+            "isAssignedId": 3,
+            "taskId": 5,
+            "teamMemberId": 9,
+            "teamId": 2
+        }
+    ]
+    ```
+    - **Description:** Assigns multiple members (admins and/or team members) to a task. If a member is already assigned to the task they will be skipped, but the others will still be assigned.
 
 - **Change Password:** `POST /team-members/{teamMemberId}/change-password`
 

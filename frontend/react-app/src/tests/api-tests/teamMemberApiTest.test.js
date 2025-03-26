@@ -1,4 +1,4 @@
-import { createTask, deleteTask, editTask, assignMemberToTask, changePassword, resetPassword, getTeamsForMember, getAssignedTasks } from '../../api/teamMemberApi';
+import { createTask, deleteTask, editTask, assignMemberToTask, changePassword, resetPassword, getTeamsForMember, getAssignedTasks, massAssignMemberToTask } from '../../api/teamMemberApi';
 
 const BASE_URL = "http://localhost:8080/api/tasks";
 
@@ -100,6 +100,29 @@ describe('Team Member API', () => {
         expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/2/assign/7`, {
             method: 'POST',
             headers: { "Content-Type": "application/json" }
+        });
+
+        expect(result).toEqual(mockResponse);
+    });
+
+    //test: assigning multiple members to a task
+    test('massAssignMemberToTask should return task assignment data on success', async () => {
+        const mockResponse = [
+            { isAssignedId: 1, taskId: 2, teamMemberId: 1, teamId: 42 },
+            { isAssignedId: 2, taskId: 2, teamMemberId: 3, teamId: 42 },
+            { isAssignedId: 3, taskId: 2, teamMemberId: 4, teamId: 42 }
+        ];
+
+        const teamMemberIds = [1, 3, 4];
+
+        fetch.mockResponseOnce(JSON.stringify(mockResponse), { status: 200 });
+
+        const result = await massAssignMemberToTask(2, teamMemberIds);
+
+        expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/2/mass-assign`, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(teamMemberIds)
         });
 
         expect(result).toEqual(mockResponse);

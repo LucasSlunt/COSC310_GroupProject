@@ -83,3 +83,22 @@ export const getTeamMembers = async (teamId) => {
         return null;
     }
 };
+
+export const getTeamTasks = async (teamId) => {
+    try {
+        const response = await fetch(`${BASE_URL}/${teamId}/tasks`, {
+            method: 'GET'
+        });
+
+        if (!response.ok) {
+            console.error(`Failed to return all tasks connected to a team: ${response.status} ${response.statusText}`);
+            return null;
+        }
+
+        return await response.json();
+    }  
+    catch (error) {
+        console.error("Error returning all tasks connected to a team: ", error);
+        return null;
+    }
+};

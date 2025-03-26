@@ -1,5 +1,6 @@
 package com.example.task_manager.controller;
 
+import com.example.task_manager.DTO.IsAssignedDTO;
 import com.example.task_manager.DTO.PasswordChangeRequestDTO;
 import com.example.task_manager.DTO.TaskDTO;
 import com.example.task_manager.DTO.TeamDTO;
@@ -22,6 +23,29 @@ public class TeamMemberController {
     public TeamMemberController(TeamMemberService teamMemberService, AdminService adminService) {
         this.teamMemberService = teamMemberService;
         this.adminService = adminService;
+    }
+
+    // Assign Member to Task
+    @PostMapping("/{taskId}/assign/{teamMemberId}")
+    public ResponseEntity<?> assignToTask(@PathVariable int taskId, @PathVariable int teamMemberId) {
+        try {
+            IsAssignedDTO assignedDTO = teamMemberService.assignToTask(taskId, teamMemberId);
+            return ResponseEntity.ok(assignedDTO);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // Assign many members to a task
+    @PostMapping("/{taskId}/mass-assign")
+    public ResponseEntity<?> massAssignToTask(@PathVariable int taskId, @RequestBody List<Integer> teamMemberIds) {
+        try {
+            List<IsAssignedDTO> isAssignedDTOs = teamMemberService.massAssignToTask(taskId, teamMemberIds);
+            return ResponseEntity.ok(isAssignedDTOs);
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     // Change Password (Placeholder)

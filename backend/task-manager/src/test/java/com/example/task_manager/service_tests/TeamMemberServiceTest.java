@@ -212,6 +212,31 @@ public class TeamMemberServiceTest {
         teamMemberService.assignToTask(task.getTaskId(), teamMember.getAccountId());
 
         assertTrue(teamMemberService.getAssignedTasks(teamMember.getAccountId())
+                .stream()
+                .anyMatch(t -> t.getTaskId() == task.getTaskId()));
+    }
+    
+    @Test
+    void testMassAssignToTask() {
+        TeamMember teamMember1 = createUniqueTeamMember();
+        TeamMember teamMember2 = createUniqueTeamMember();
+        TeamMember teamMember3 = createUniqueTeamMember();
+
+        Team team = createUniqueTeam(teamMember1);
+        Task task = createUniqueTask(team);
+
+        teamMemberService.massAssignToTask(task.getTaskId(),
+                List.of(teamMember1.getAccountId(), teamMember2.getAccountId(), teamMember3.getAccountId()));
+        
+        assertTrue(teamMemberService.getAssignedTasks(teamMember1.getAccountId())
+            .stream()
+            .anyMatch(t -> t.getTaskId() == task.getTaskId()));
+
+        assertTrue(teamMemberService.getAssignedTasks(teamMember2.getAccountId())
+            .stream()
+            .anyMatch(t -> t.getTaskId() == task.getTaskId()));
+            
+        assertTrue(teamMemberService.getAssignedTasks(teamMember3.getAccountId())
             .stream()
             .anyMatch(t -> t.getTaskId() == task.getTaskId()));
     }

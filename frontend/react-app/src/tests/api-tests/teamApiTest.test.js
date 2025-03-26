@@ -1,4 +1,4 @@
-import { createTeam, deleteTeam, changeTeamLead, getTeamMembers } from '../../api/teamApi';
+import { createTeam, deleteTeam, changeTeamLead, getTeamMembers, getTeamTasks } from '../../api/teamApi';
 
 const BASE_URL = "http://localhost:8080/api/teams";
 
@@ -72,6 +72,18 @@ describe('Team API', () => {
 
         const result = await getTeamMembers(1);
         expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/1/members`, {
+            method: 'GET'
+        });
+
+        expect(result).toEqual(true);
+    });
+
+    //test: get all tasks connected to a team
+    test('getTeamTasks should rteurn task data on success', async () => {
+        fetch.mockResponseOnce(JSON.stringify(true), { status: 200 });
+
+        const result = await getTeamTasks(1);
+        expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/1/tasks`, {
             method: 'GET'
         });
 
