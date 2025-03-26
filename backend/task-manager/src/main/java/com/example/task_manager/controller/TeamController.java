@@ -1,6 +1,7 @@
 package com.example.task_manager.controller;
 
 import com.example.task_manager.DTO.TeamDTO;
+import com.example.task_manager.DTO.TeamMemberDTO;
 import com.example.task_manager.DTO.TeamRequestDTO;
 import com.example.task_manager.service.AdminService;
 import com.example.task_manager.service.TeamService;
@@ -60,6 +61,16 @@ public class TeamController {
             return ResponseEntity.ok(teams);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // Get team members for a specific team
+    @GetMapping("/{teamId}/members")
+    public ResponseEntity<List<TeamMemberDTO>> getTeamMembers(@PathVariable int teamId) {
+        try {
+            return ResponseEntity.ok(teamService.getTeamMembers(teamId));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }

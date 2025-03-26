@@ -58,7 +58,7 @@ public class TeamMemberController {
         }
     }    
 
-    //get all team members in the database
+    //get all team members stored in the database
     @GetMapping("/team-members")
     public ResponseEntity<?> getTeamMembers() {
         try {

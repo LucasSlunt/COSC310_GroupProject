@@ -45,25 +45,4 @@ public class IsMemberOfController {
     public ResponseEntity<?> isMemberOfTeam(@PathVariable int teamMemberId, @PathVariable int teamId) {
         return ResponseEntity.ok(isMemberOfService.isMemberOfTeam(teamMemberId, teamId));
     }
-
-    // Get Team Members
-    @GetMapping("/{teamId}/members")
-    public ResponseEntity<List<TeamMemberDTO>> getTeamMembers(@PathVariable int teamId) {
-        try {
-            return ResponseEntity.ok(teamService.getTeamMembers(teamId));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    // Assign Member to Task
-    @PostMapping("/{taskId}/assign/{teamMemberId}")
-    public ResponseEntity<?> assignToTask(@PathVariable int taskId, @PathVariable int teamMemberId) {
-        try {
-            IsAssignedDTO assignedDTO = teamMemberService.assignToTask(taskId, teamMemberId);
-            return ResponseEntity.ok(assignedDTO);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
 }

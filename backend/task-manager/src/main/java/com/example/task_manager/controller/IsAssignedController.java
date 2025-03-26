@@ -1,6 +1,11 @@
 package com.example.task_manager.controller;
 
+import com.example.task_manager.DTO.IsAssignedDTO;
+import com.example.task_manager.DTO.TeamMemberDTO;
 import com.example.task_manager.service.IsAssignedService;
+
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +20,7 @@ public class IsAssignedController {
         this.isAssignedService = isAssignedService;
     }
 
-    // Assign Team Member to a Task
+    // Assign a team member to a task
     @PostMapping("/{teamMemberId}/task/{taskId}")
     public ResponseEntity<?> assignToTask(@PathVariable int teamMemberId, @PathVariable int taskId) {
         try {
@@ -25,7 +30,7 @@ public class IsAssignedController {
         }
     }
 
-    // Unassign Team Member from Task
+    // Unassign a team member from a task
     @DeleteMapping("/{teamMemberId}/task/{taskId}")
     public ResponseEntity<?> unassignFromTask(@PathVariable int teamMemberId, @PathVariable int taskId) {
         try {
