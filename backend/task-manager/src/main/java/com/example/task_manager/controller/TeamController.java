@@ -1,5 +1,6 @@
 package com.example.task_manager.controller;
 
+import com.example.task_manager.DTO.TaskDTO;
 import com.example.task_manager.DTO.TeamDTO;
 import com.example.task_manager.DTO.TeamMemberDTO;
 import com.example.task_manager.DTO.TeamRequestDTO;
@@ -10,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import com.example.task_manager.DTO.TaskDTO;
 
 @RestController
 @RequestMapping("/api/teams")
