@@ -1,0 +1,63 @@
+AdminAccountController
+- POST    /api/admins                     → createAdmin
+- DELETE  /api/admins/{id}               → deleteAdmin
+- PUT     /api/admins/{id}/name          → updateAdminName
+- PUT     /api/admins/{id}/email         → updateAdminEmail
+- GET     /api/admins/{id}               → getAdminById
+
+TeamMemberAccountController
+- POST    /api/members                   → createTeamMember
+- DELETE  /api/members/{id}             → deleteTeamMember
+- PUT     /api/members/{id}/name        → updateTeamMemberName
+- PUT     /api/members/{id}/email       → updateTeamMemberEmail
+- GET     /api/members/{id}             → getTeamMemberById
+
+AdminController
+- POST    /api/admins/actions/assign-team         → assignToTeam
+- PUT     /api/admins/actions/{id}/role           → changeRole
+- PATCH   /api/admins/actions/tasks/{id}/lock     → lockTask
+- PATCH   /api/admins/actions/tasks/{id}/unlock   → unlockTask
+- GET     /api/admins                             → getAdmins
+- PUT     /api/admins/actions/{id}/reset      → resetPassword
+
+AuthInfoController
+- POST    /api/auth/login               → login
+- GET     /api/auth/{id}/admin          → isAdmin
+
+TeamMemberController
+- PUT     /api/members/actions/{id}/password   → changePassword
+- GET     /api/members/{id}/teams              → getTeamsForMember
+- GET     /api/members/{id}/tasks              → getAssignedTasks
+- GET     /api/members                         → getTeamMembers
+
+TaskController
+- POST    /api/tasks                   → createTask
+- DELETE  /api/tasks/{id}             → deleteTask
+- PUT     /api/tasks/{id}             → editTask
+
+TeamController
+- POST    /api/teams                   → createTeam
+- DELETE  /api/teams/{id}             → deleteTeam
+- PUT     /api/teams/{id}/lead        → changeTeamLead
+- GET     /api/teams                  → getAllTeams
+
+NotificationController
+- GET     /api/notifications/unread/{id}    → getUnreadNotifications
+- GET     /api/notifications/read/{id}      → getReadNotifications
+- PUT     /api/notifications/{id}/read      → markAsRead
+- PUT     /api/notifications/{id}/unread    → markAsUnread
+- DELETE  /api/notifications/{id}           → deleteNotification
+
+IsMemberOfController
+- POST    /api/memberships                             → addMemberToTeam
+- DELETE  /api/memberships/{teamId}/{memberId}         → removeMemberFromTeam
+- GET     /api/memberships/{teamId}/{memberId}         → isMemberOfTeam
+
+IsAssignedController
+- POST    /api/assignments                             → assignToTask
+- DELETE  /api/assignments/{taskId}/{memberId}         → unassignFromTask
+- GET     /api/assignments/{taskId}/{memberId}         → isAssignedToTask
+
+Notes:
+AuthController route mapping changed from /auth-info to /api/auth
+Notification route mapping changed from /notif to /api/notifications
