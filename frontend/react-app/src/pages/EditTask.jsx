@@ -5,9 +5,7 @@ import '../css/EditTask.css'
 function EditTask(){
         const location = useLocation()
         const { taskToEdit } = location.state
-        const {onThisTeam} = location.state
-        console.log("taskToEdit: ", taskToEdit)
-        console.log("onThisTeam: ", onThisTeam)
+
 
         return(
             <div className='pageContainer'>
@@ -15,7 +13,6 @@ function EditTask(){
                 <div className='pageBody'>
                         <EditTaskForm
                         task={taskToEdit}
-                        team={onThisTeam}
                         />
                 </div>
             </div>

@@ -49,7 +49,7 @@ export const editTask = async (taskId, title, description, isLocked, status, due
         const response = await fetch(`${BASE_URL}/${taskId}`, {
             method: 'PUT',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({title, description, isLocked, status, dueDate})
+            body: JSON.stringify({taskId, title, description, isLocked, status, dueDate})
         });
 
         if (!response.ok) {

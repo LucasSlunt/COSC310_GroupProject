@@ -27,7 +27,7 @@ export default function CreateAccountForm({teams}){
         } catch (error) {
             alert(error)
         }
-        //window.location.href="/home";
+        window.location.href="/home";
     }
     async function addToTeams(id, teams) {
         const data = await Promise.all(

@@ -51,7 +51,7 @@ function setUpData(results) {
     return results
       .map((taskItem) => ({
         id: taskItem.taskId,
-        name: taskItem.title,
+        name: taskItem,
         team: taskItem.teamId,
         assignees: getAssigneesNames(taskItem),
         status: taskItem.status,
@@ -129,7 +129,7 @@ useEffect(() => {
             Header: "Task Name",
             accessor: "name",
             Cell: (original) => (
-                <Link to="/view-task" state={{taskToSee: original.cell.row.values.id}}>{original.value}</Link>
+                <Link to="/view-task" state={{taskToSee: original.value, teamMembers: original.cell.row.values.assignees}}>{original.value.title}</Link>
               )
         },
         {

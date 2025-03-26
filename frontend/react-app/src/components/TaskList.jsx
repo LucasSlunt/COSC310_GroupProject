@@ -16,7 +16,7 @@ function TaskList({dataToUse, headersAndAccessors}){
     const filteredData = React.useMemo(()=> {return dataToUse.filter((task) =>{
             switch(searchForThis.value){
             case "name":
-                return task.name.toLowerCase().includes(searchQuery.toLowerCase())
+                return task.name.title.toLowerCase().includes(searchQuery.toLowerCase())
             case "team":
                 return task.team.toLowerCase().includes(searchQuery.toLowerCase())
             case "assignees":

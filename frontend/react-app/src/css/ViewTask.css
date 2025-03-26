@@ -14,11 +14,6 @@ div.viewTask{
     flex-direction: column;
     background-color: #5d5d81;
 }
-div.page-body{
-    margin-left: 5%;
-    margin-right: 5%;
-    font-family: Calibri;
-}
 div.flexbox{
     margin-top: 2rem;
     margin-bottom: 2rem;
@@ -39,6 +34,9 @@ div.priority{
     border-radius: 20px;
     text-align: right;
     border: 2px solid black;
+}
+.description{
+    margin-bottom: 15px;
 }
 div.pic{
     display: flex;
@@ -73,15 +71,13 @@ input.submit-comment{
     font-size: 15px;
     border-radius: 3px;
 }
-.update-class{
-    display: flex;
-    justify-content: space-between;
-}
 .updateSelector{
     padding: 10px;
     border-bottom: 2px solid black;
     border-radius: 20px;
     background-color: #bfcde0;
+    margin-right: 10px;
+    cursor: pointer;
 }
 .fotterbutton{
     margin-left: 10px;
@@ -94,5 +90,6 @@ input.submit-comment{
     border-bottom: 2px solid black;
     border-radius: 10px;
     background-color: #1d1e22;
+    cursor: pointer;
 }
 

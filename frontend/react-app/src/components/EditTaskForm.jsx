@@ -1,6 +1,6 @@
 
 import {useForm} from 'react-hook-form'
-function EditTaskForm({task, team}){
+function EditTaskForm({task}){
     const { register, handleSubmit, formState: {errors}} = useForm();
     const onSubmit = data => {
         console.log(data)
@@ -8,7 +8,7 @@ function EditTaskForm({task, team}){
         window.location.href="/home";
     };
     return(
-        <form onSubmit={handleSubmit(onSubmit)} className='body'>
+        <form onSubmit={handleSubmit(onSubmit)} className='editTaskForm'>
                         <label className='majorLabel'>
                                 Task Name
                                 <div>
@@ -30,14 +30,14 @@ function EditTaskForm({task, team}){
                             </label>
                             <label className='majorLabel'>
                                 Assign To:
-                                <div className='Checkboxs'>
+                                {/*<div className='Checkboxs'>
                                     {team.map((teamMember)=>(
                                         <div className='checkbox' key = {teamMember.name}>
                                             {teamMember.name}
                                             <input type="checkbox" name="" id="" value = {teamMember.name} {...register("assignees")}/>
                                         </div>
                                     ))}
-                                </div>
+                                </div>*/}
                             </label>
                             <label className='majorLabel'>
                             Discription

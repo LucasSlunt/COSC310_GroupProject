@@ -1,89 +1,93 @@
 import "../css/ViewTask.css"
 import Header from "../components/Header.jsx"
 import {useLocation, Link} from 'react-router-dom'
-import fakeTaskData from '../FakeData/fakeTaskData.json'
-import team from '../FakeData/fakeTeamData.json'
+import { deleteTask, editTask } from "../api/teamMemberApi.js"
 
-const teamData = team
-function getAssignnesNames(task){
-    let returnArr = []
-    task.assignees.map((assigne)=>{
-        returnArr = [...returnArr, (assigne.name+" ")]
-    })
-    return returnArr
-}
+
 function ViewTask(){
     const location = useLocation()
     const { taskToSee } = location.state
-    console.log(taskToSee)
-    function getTask (){
-        //We will do an API GET call for the task here
-        let returnArr =[]
-        fakeTaskData.map((task)=>{
-            if(task.id === taskToSee){
-                returnArr = [...returnArr, {
-                    id: task.id,
-                    name: task.name,
-                    team: task.team,
-                    assignees: getAssignnesNames(task),
-                    dueDate: task.dueDate,
-                    priority: task.priority,
-                    discription: task.discription,
-                    dateCompteted: task.dateCompteted
-                }]
+    const {teamMembers} = location.state
+    async function changeStatus(event) {
+        try {
+            const response = await editTask(taskToSee.taskId, taskToSee.title, taskToSee.description, taskToSee.isLocked, event.target.value, taskToSee.dueDate)
+            if(response === null){
+                throw Error ("Failed to update status")
             }
-        })
-        if(returnArr.length ===0){
-            return {name: "TaskFailedToLoad"}
+            alert("Status updated")
+        } catch (error) {
+            alert(error)
         }
-        return returnArr[0]
     }
 
-    const taskInfo = getTask()
+
+
+
+    async function deleteThisTask() {
+        try {
+            const response = await deleteTask(taskToSee.taskId)
+            if(response){
+                alert('task Deleted')
+                window.location.href="/my-tasks";
+            }else{
+                throw Error("Failed to delete Task")
+            }
+        } catch (error) {
+            alert(error)
+        }
+        
+    }
+
     
     return(
         <div className='pageContainer'>
             <Header/>
             <div className='pageBody'>
-                <div class="flexbox">
-                    <div class="header"style={{ whiteSpace: 'pre-line' }}>
-                    <strong class ="nameOfTask">{getTask().name + "\n"}</strong> Assigned to: {getTask().assignees}
+                <div className="flexbox">
+                <strong class ="nameOfTask">{taskToSee.title + "\n"}</strong>
+                    <div className="rowFlexbox" style={{justifyContent:'space-between', marginBottom: '15px'}}>
+                        <div className="header"style={{ whiteSpace: 'pre-line' }}>
+                         Assigned to:{teamMembers}
+                        </div>
+                        {/* Place holder for when we get our database we will get the prority DB*/}
+                        <div className="priority">
+                            Priority: {taskToSee.priority}
+                        </div>
                     </div>
-                    {/* Place holder for when we get our database we will get the prority DB*/}
-                    <div class="priority">
-                        Priority: {getTask().priority}
+                
+                    <div className="description">
+                        {taskToSee.description}
                     </div>
-                </div>
-                <div class="discription">
-                    {getTask().discription}
-                </div>
-                {/*<div class="pic">
-                    <ul>
-                        <li class="imgSpacing"><img src={getTask.pic1} alt="" /></li>
-                        <li class="imgSpacing"><img src={getTask.pic2} alt="" /></li>
-                    </ul>
+                    {/**
+                     * possible image/comments feature not need but could be cool
+                     */}
+                    {/*<div class="pic">
+                        <ul>
+                            <li class="imgSpacing"><img src={getTask.pic1} alt="" /></li>
+                            <li class="imgSpacing"><img src={getTask.pic2} alt="" /></li>
+                        </ul>
 
-                </div>*/}
-                <div class="comment-section">
-                    <form action="">
-                        <input type="text" name="Comment" id="comment" placeholder = "Add Comment/Note"class = "comment"/>
-                        <input type="button" value="SUBMIT" class ="submit-comment"/>
-                    </form>
-                </div>
-                <div class="update-class">
-                    <div class = "updateStatus">
-                        <select name="update status" id="newStatus" class = "updateSelector">
-                            <option value="" disabled selected>Update Status</option>
-                            <option value="notStarted">Not Started</option>
-                            <option value="InProgress">In Progress</option>
-                            <option value="Done">Done</option>
-                        </select>
-                        <Link to = {'/edit-task'} state={{taskToEdit: taskInfo, onThisTeam: teamData}}>
-                            <button class="fotterbutton">EDIT</button>
-                            </Link>
                     </div>
-                    <input type="button" value="DELETE TASK" class="fotterbutton"/>
+                    <div className="comment-section">
+                        <form action="">
+                            <input type="text" name="Comment" id="comment" placeholder = "Add Comment/Note"class = "comment"/>
+                            <input type="button" value="SUBMIT" classNmae ="submit-comment"/>
+                        </form>
+                    </div>*/}
+                    <div className="update-class rowFlexbox" style={{justifyContent:'space-between'}}>
+                        <div>
+                            <select name="update status" id="newStatus" className = "updateSelector" defaultValue={taskToSee.status} onChange={changeStatus}>
+                                <option value="notStarted">Not Started</option>
+                                <option value="InProgress">In Progress</option>
+                                <option value="Done">Done</option>
+                            </select>
+                            <Link to = {'/edit-task'} state={{taskToEdit: taskToSee}}>
+                                <button class="fotterbutton">EDIT TASK</button>
+                                </Link>
+                        </div>
+                        <input type="button" value="DELETE TASK" className="fotterbutton" onClick={deleteThisTask}/>
 
+                    </div>
                 </div>
             </div>
         </div>
