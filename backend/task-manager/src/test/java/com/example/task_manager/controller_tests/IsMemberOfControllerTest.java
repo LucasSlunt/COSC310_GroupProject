@@ -9,7 +9,6 @@ import com.example.task_manager.controller.IsMemberOfController;
 import com.example.task_manager.service.IsMemberOfService;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,9 +24,6 @@ public class IsMemberOfControllerTest {
 
     @MockBean
     private IsMemberOfService isMemberOfService;
-
-    @InjectMocks
-    private IsMemberOfController isMemberOfController;
 
     /**
      * Test Add Member to a Team

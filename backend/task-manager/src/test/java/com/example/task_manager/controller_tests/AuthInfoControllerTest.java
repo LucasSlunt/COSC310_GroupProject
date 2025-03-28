@@ -10,7 +10,6 @@ import com.example.task_manager.enums.RoleType;
 import com.example.task_manager.service.AuthInfoService;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -26,9 +25,6 @@ public class AuthInfoControllerTest {
 
     @MockBean
     private AuthInfoService authInfoService;
-
-    @InjectMocks
-    private AuthController authController;
 
     /**
      * Test Successful Login

@@ -9,10 +9,8 @@ import com.example.task_manager.DTO.NotificationDTO;
 import com.example.task_manager.controller.NotificationController;
 import com.example.task_manager.enums.NotificationType;
 import com.example.task_manager.service.NotificationService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -32,12 +30,6 @@ public class NotificationControllerTest {
 
     @MockBean
     private NotificationService notificationService;
-
-    @InjectMocks
-    private NotificationController notificationController;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     /**
      * Test Get Unread Notifications
