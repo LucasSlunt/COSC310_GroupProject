@@ -1,5 +1,6 @@
 package com.example.task_manager.controller_tests;
 
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -144,7 +145,7 @@ public class AdminControllerTest {
                 public final String newPassword = "BrainStew_GreenDay";
         });
 
-        doNothing().when(teamMemberService).resetPassword(teamMemberId, newPassword);
+        doNothing().when(teamMemberService).resetPassword(eq(teamMemberId), eq("BrainStew_GreenDay"));
 
         mockMvc.perform(post("/api/admins/actions/{teamMemberId}/reset-password", teamMemberId)
                 .contentType(MediaType.APPLICATION_JSON)

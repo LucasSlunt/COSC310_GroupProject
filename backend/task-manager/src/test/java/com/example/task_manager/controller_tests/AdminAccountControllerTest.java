@@ -119,7 +119,7 @@ public class AdminAccountControllerTest {
     void testGetAdminById_NotFound() throws Exception {
         when(adminService.getAdminById(999)).thenThrow(new RuntimeException("Admin not found"));
 
-        mockMvc.perform(get("/api/admin/999"))
+        mockMvc.perform(get("/api/admins/999"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Admin not found"));
     }
