@@ -2,9 +2,7 @@ package com.example.task_manager.controller;
 
 import com.example.task_manager.DTO.IsAssignedDTO;
 import com.example.task_manager.DTO.PasswordChangeRequestDTO;
-import com.example.task_manager.DTO.ResetPasswordRequestDTO;
 import com.example.task_manager.DTO.TaskDTO;
-import com.example.task_manager.DTO.TaskRequestDTO;
 import com.example.task_manager.DTO.TeamDTO;
 import com.example.task_manager.DTO.TeamMemberWithTeamLeadDTO;
 import com.example.task_manager.service.AdminService;
@@ -16,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/tasks")
+@RequestMapping("/api/members/actions")
 public class TeamMemberController {
 
     private final TeamMemberService teamMemberService;
@@ -28,7 +26,7 @@ public class TeamMemberController {
     }
 
     // Assign Member to Task
-    @PostMapping("/{taskId}/assign/{teamMemberId}")
+    @PostMapping("/task/{taskId}/assign/{teamMemberId}")
     public ResponseEntity<?> assignToTask(@PathVariable int taskId, @PathVariable int teamMemberId) {
         try {
             IsAssignedDTO assignedDTO = teamMemberService.assignToTask(taskId, teamMemberId);
@@ -39,7 +37,7 @@ public class TeamMemberController {
     }
 
     // Assign many members to a task
-    @PostMapping("/{taskId}/mass-assign")
+    @PostMapping("/task/{taskId}/mass-assign")
     public ResponseEntity<?> massAssignToTask(@PathVariable int taskId, @RequestBody List<Integer> teamMemberIds) {
         try {
             List<IsAssignedDTO> isAssignedDTOs = teamMemberService.massAssignToTask(taskId, teamMemberIds);
