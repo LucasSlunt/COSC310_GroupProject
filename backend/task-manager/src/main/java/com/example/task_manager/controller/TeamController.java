@@ -1,7 +1,9 @@
 package com.example.task_manager.controller;
 
 import com.example.task_manager.DTO.TeamDTO;
+import com.example.task_manager.DTO.TeamMemberInTeamDTO;
 import com.example.task_manager.DTO.TeamRequestDTO;
+import com.example.task_manager.service.AdminService;
 import com.example.task_manager.service.TeamService;
 
 import org.springframework.http.ResponseEntity;
@@ -10,16 +12,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import com.example.task_manager.DTO.TaskDTO;
-import com.example.task_manager.DTO.TeamMemberInTeamDTO;
 
 @RestController
 @RequestMapping("/api/teams")
 public class TeamController {
-
+    
     private final TeamService teamService;
+    private final AdminService adminService;
 
-    public TeamController(TeamService teamService) {
+    public TeamController(TeamService teamService, AdminService adminService) {
         this.teamService = teamService;
+        this.adminService = adminService;
     }
 
     // Create a Team
@@ -55,7 +58,17 @@ public class TeamController {
         }
     }
 
-    // Get Team Members
+    @GetMapping
+    public ResponseEntity<?> getAllTeams() {
+        try {
+            List<TeamDTO> teams = adminService.getAllTeams();
+            return ResponseEntity.ok(teams);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // Get team members for a specific team
     @GetMapping("/{teamId}/members")
     public ResponseEntity<List<TeamMemberInTeamDTO>> getTeamMembers(@PathVariable int teamId) {
         try {

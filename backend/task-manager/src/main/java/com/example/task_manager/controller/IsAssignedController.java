@@ -15,7 +15,7 @@ public class IsAssignedController {
         this.isAssignedService = isAssignedService;
     }
 
-    // Assign Team Member to a Task
+    // Assign a team member to a task
     @PostMapping("/{teamMemberId}/task/{taskId}")
     public ResponseEntity<?> assignToTask(@PathVariable int teamMemberId, @PathVariable int taskId) {
         try {
@@ -25,7 +25,7 @@ public class IsAssignedController {
         }
     }
 
-    // Unassign Team Member from Task
+    // Unassign a team member from a task
     @DeleteMapping("/{teamMemberId}/task/{taskId}")
     public ResponseEntity<?> unassignFromTask(@PathVariable int teamMemberId, @PathVariable int taskId) {
         try {

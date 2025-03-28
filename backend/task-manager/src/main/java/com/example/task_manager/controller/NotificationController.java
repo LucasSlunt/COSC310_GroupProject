@@ -1,26 +1,22 @@
 package com.example.task_manager.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.task_manager.service.NotificationService;
 
 @RestController
-@RequestMapping("/notif")
+@RequestMapping("/api/notifications")
 public class NotificationController {
-    private NotificationService notifService;
 
+    private NotificationService notifService;
 
     public NotificationController(NotificationService notifService) {
         this.notifService = notifService;
     }
 
-    @GetMapping("/{teamMemberId}/read-notifs")
+    //Get all notifications marked as read for a specific team member
+    @GetMapping("/{teamMemberId}/read")
     public ResponseEntity<?> getReadNotifications(@PathVariable int teamMemberId) {
         try {
             return ResponseEntity.ok(notifService.getReadNotifications(teamMemberId));
@@ -29,7 +25,8 @@ public class NotificationController {
         }
     }
 
-    @GetMapping("/{teamMemberId}/unread-notifs")
+    //Get all notifications marked as unread for a specific team member
+    @GetMapping("/{teamMemberId}/unread")
     public ResponseEntity<?> getUnreadNotifications(@PathVariable int teamMemberId) {
         try {
             return ResponseEntity.ok(notifService.getUnreadNotifications(teamMemberId));
@@ -38,6 +35,7 @@ public class NotificationController {
         }
     }
 
+    //Mark a specific notification as read
     @PutMapping("/{notificationId}/mark-as-read")
     public ResponseEntity<?> markAsRead(@PathVariable int notificationId) {
         try {
@@ -49,6 +47,7 @@ public class NotificationController {
         }
     }
 
+    //Mark a specific notification as unread
     @PutMapping("/{notificationId}/mark-as-unread")
     public ResponseEntity<?> markAsUnread(@PathVariable int notificationId) {
         try {
@@ -60,6 +59,7 @@ public class NotificationController {
         }
     }
 
+    //Delete a notification
     @DeleteMapping("/{notificationId}")
     public ResponseEntity<?> deleteNotification(@PathVariable int notificationId) {
         try {
