@@ -35,7 +35,7 @@ public class AuthInfoControllerTest {
 
         when(authInfoService.authenticateUser(1, "correctpassword")).thenReturn(mockUser);
 
-        mockMvc.perform(post("/auth-info/login")
+        mockMvc.perform(post("/api/auth/login")
                 .contentType("application/json")
                 .content("{\"accountId\":1, \"password\":\"correctpassword\"}"))
                 .andExpect(status().isOk())
@@ -55,7 +55,7 @@ public class AuthInfoControllerTest {
 
         when(authInfoService.authenticateUser(2, "adminpassword")).thenReturn(mockAdmin);
 
-        mockMvc.perform(post("/auth-info/login")
+        mockMvc.perform(post("/api/auth/login")
                 .contentType("application/json")
                 .content("{\"accountId\":2, \"password\":\"adminpassword\"}"))
                 .andExpect(status().isOk())
@@ -74,7 +74,7 @@ public class AuthInfoControllerTest {
         when(authInfoService.authenticateUser(1, "wrongpassword"))
                 .thenThrow(new RuntimeException("Invalid Credentials"));
 
-        mockMvc.perform(post("/auth-info/login")
+        mockMvc.perform(post("/api/auth/login")
                 .contentType("application/json")
                 .content("{\"accountId\":1, \"password\":\"wrongpassword\"}"))
                 .andExpect(status().isUnauthorized())
@@ -91,7 +91,7 @@ public class AuthInfoControllerTest {
         when(authInfoService.authenticateUser(9999, "somepassword"))
                 .thenThrow(new RuntimeException("Team Member not found"));
 
-        mockMvc.perform(post("/auth-info/login")
+        mockMvc.perform(post("/api/auth/login")
                 .contentType("application/json")
                 .content("{\"accountId\":9999, \"password\":\"somepassword\"}"))
                 .andExpect(status().isUnauthorized())
@@ -107,7 +107,7 @@ public class AuthInfoControllerTest {
     void testIsAdmin_Success_AdminUser() throws Exception {
         when(authInfoService.isAdmin(2)).thenReturn(RoleType.ADMIN);
 
-        mockMvc.perform(get("/auth-info/2/is-admin"))
+        mockMvc.perform(get("/api/auth/2/is-admin"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value("ADMIN"));
 
@@ -121,7 +121,7 @@ public class AuthInfoControllerTest {
     void testIsAdmin_Success_NonAdminUser() throws Exception {
         when(authInfoService.isAdmin(1)).thenReturn(RoleType.ADMIN);
 
-        mockMvc.perform(get("/auth-info/1/is-admin"))
+        mockMvc.perform(get("/api/auth/1/is-admin"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value("ADMIN"));
 
@@ -136,7 +136,7 @@ public class AuthInfoControllerTest {
         when(authInfoService.isAdmin(9999))
                 .thenThrow(new RuntimeException("Team Member not found"));
 
-        mockMvc.perform(get("/auth-info/9999/is-admin"))
+        mockMvc.perform(get("/api/auth/9999/is-admin"))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string(""));
 

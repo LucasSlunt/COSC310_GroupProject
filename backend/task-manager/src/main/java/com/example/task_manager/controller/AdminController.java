@@ -24,7 +24,7 @@ public class AdminController {
     }
 
     // Assign Team Member to Team
-    @PostMapping("/assign-to-team/{teamId}")
+    @PostMapping("/team-member/{teamMemberId}/assign-to-team/{teamId}")
     public ResponseEntity<?> assignToTeam(@PathVariable int teamMemberId, @PathVariable int teamId) {
         try {
             return ResponseEntity.ok(adminService.assignToTeam(teamMemberId, teamId));

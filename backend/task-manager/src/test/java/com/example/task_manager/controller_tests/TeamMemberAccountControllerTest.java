@@ -45,7 +45,7 @@ public class TeamMemberAccountControllerTest {
 
         when(adminService.createTeamMember(mockMember.getUserName(), mockMember.getUserEmail(), "securePass")).thenReturn(mockMember);
 
-        mockMvc.perform(post("/api/admin/team-member")
+        mockMvc.perform(post("/api/members")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestDTO)))
                 .andExpect(status().isOk())
@@ -64,7 +64,7 @@ public class TeamMemberAccountControllerTest {
 
         when(adminService.modifyTeamMemberName(1, updatedMember.getUserName())).thenReturn(updatedMember);
 
-        mockMvc.perform(put("/api/admin/team-member/1/update-name")
+        mockMvc.perform(put("/api/members/1/name")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestDTO)))
                 .andExpect(status().isOk())
@@ -82,7 +82,7 @@ public class TeamMemberAccountControllerTest {
 
         when(adminService.modifyTeamMemberEmail(1, updatedMember.getUserEmail())).thenReturn(updatedMember);
 
-        mockMvc.perform(put("/api/admin/team-member/1/update-email")
+        mockMvc.perform(put("/api/members/1/email")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestDTO)))
                 .andExpect(status().isOk())

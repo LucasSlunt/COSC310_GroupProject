@@ -16,18 +16,17 @@ import com.example.task_manager.service.AdminService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.example.task_manager.controller.AdminController;
 import com.example.task_manager.service.TeamMemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(AdminController.class)
 @ActiveProfiles("test")
 public class AdminControllerTest {
 
@@ -53,7 +52,7 @@ public class AdminControllerTest {
 
         String request = objectMapper.writeValueAsString(new ChangeRoleRequestDTO(RoleType.ADMIN));
 
-        mockMvc.perform(post("/api/admin/team-member/1/change-role")
+        mockMvc.perform(post("/api/admins/actions/1/role")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
                 .andExpect(status().isOk())
@@ -72,7 +71,7 @@ public class AdminControllerTest {
         String request = objectMapper.writeValueAsString(new ChangeRoleRequestDTO(RoleType.TEAM_MEMBER));
 
         mockMvc.perform(post(
-                "/api/admin/team-member/1/change-role")
+                "/api/admins/actions/1/role")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
                 .andExpect(status().isOk())
@@ -90,7 +89,7 @@ public class AdminControllerTest {
 
         when(adminService.assignToTeam(2, 1)).thenReturn(updatedMember);
 
-        mockMvc.perform(post("/api/admin/team-member/2/assign-to-team/1"))
+        mockMvc.perform(post("/api/admins/actions/team-member/2/assign-to-team/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accountId").value(2))
                 .andExpect(jsonPath("$.userName").value("John Doe"))
@@ -104,7 +103,7 @@ public class AdminControllerTest {
     void testLockTask() throws Exception {
         doNothing().when(adminService).lockTask(1);
 
-        mockMvc.perform(put("/api/admin/tasks/1/lock"))
+        mockMvc.perform(put("/api/admins/actions/tasks/1/lock"))
                 .andExpect(status().isOk());
     }
 
@@ -115,7 +114,7 @@ public class AdminControllerTest {
     void testUnlockTask() throws Exception {
         doNothing().when(adminService).unlockTask(1);
 
-        mockMvc.perform(put("/api/admin/tasks/1/unlock"))
+        mockMvc.perform(put("/api/admins/actions/tasks/1/unlock"))
                 .andExpect(status().isOk());
     }
 
@@ -128,7 +127,7 @@ public class AdminControllerTest {
 
         when(adminService.getAllAdmins()).thenReturn(mockAdmins);
 
-        mockMvc.perform(get("/api/admin/admins"))
+        mockMvc.perform(get("/api/admins/actions"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(2))
                 .andExpect(jsonPath("$[0].accountId").value(1))
@@ -147,7 +146,7 @@ public class AdminControllerTest {
 
         doNothing().when(teamMemberService).resetPassword(teamMemberId, newPassword);
 
-        mockMvc.perform(post("/api/tasks/team-members/{teamMemberId}/reset-password", teamMemberId)
+        mockMvc.perform(post("/api/admins/actions/{teamMemberId}/reset-password", teamMemberId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
                 .andExpect(status().isNoContent());

@@ -53,7 +53,7 @@ public class TeamMemberControllerTest {
         IsAssignedDTO assignedDTO = new IsAssignedDTO(uniqueId, taskId, teamMemberId, uniqueId);
         when(teamMemberService.assignToTask(taskId, teamMemberId)).thenReturn(assignedDTO);
 
-        mockMvc.perform(post("/api/tasks/" + taskId + "/assign/" + teamMemberId))
+        mockMvc.perform(post("/api/members/actions/task/" + taskId + "/assign/" + teamMemberId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.taskId").value(taskId));
     }
@@ -75,7 +75,7 @@ public class TeamMemberControllerTest {
         );
         when(teamMemberService.massAssignToTask(taskId, teamMemberIds)).thenReturn(mockAssignments);
 
-        mockMvc.perform(post("/api/tasks/2/mass-assign"))
+        mockMvc.perform(post("/api/members/actions/task/2/mass-assign"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.taskId").value(taskId));
     }
@@ -98,7 +98,7 @@ public class TeamMemberControllerTest {
 
         when(teamMemberService.getTeamsForMember(1)).thenReturn(mockTeams);
 
-        MvcResult result = mockMvc.perform(get("/api/tasks/1/teams"))
+        MvcResult result = mockMvc.perform(get("/api/members/actions/1/teams"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -115,7 +115,7 @@ public class TeamMemberControllerTest {
 
         when(teamMemberService.getAssignedTasks(1)).thenReturn(mockTasks);
 
-        MvcResult result = mockMvc.perform(get("/api/tasks/1/tasks"))
+        MvcResult result = mockMvc.perform(get("/api/members/actions/1/tasks"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].priority").value("MEDIUM"))
                 .andExpect(jsonPath("$[1].priority").value("MEDIUM"))
@@ -132,7 +132,7 @@ public class TeamMemberControllerTest {
 
         when(adminService.getAllTeamMembers()).thenReturn(mockTMs);
 
-        mockMvc.perform(get("/api/admin/team-members"))
+        mockMvc.perform(get("/api/members/actions/team-members"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(2))
                 .andExpect(jsonPath("$[0].accountId").value(1))

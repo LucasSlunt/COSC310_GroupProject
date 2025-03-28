@@ -159,7 +159,7 @@ public class TeamControllerTest {
 
         when(adminService.getAllTeams()).thenReturn(mockTeams);
 
-        mockMvc.perform(get("/api/admin/all-teams"))
+        mockMvc.perform(get("/api/teams"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(2))
                 .andExpect(jsonPath("$[0].teamId").value(1))
